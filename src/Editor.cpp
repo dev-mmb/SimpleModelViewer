@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "ui/ExampleUI.h"
+
 Editor* EditorData::editor;
 
 Editor::Editor(int w, int h)
@@ -9,18 +11,24 @@ Editor::Editor(int w, int h)
 	this->camera = new Camera(glm::vec3(0, 0, -5), glm::vec3(0, 1, 0), 0, 0, 10, w, h);
 	this->window = new Window(w, h);
 	EditorData::create(this);
+	UserInterfaceComponent::setUserInterface(window->getUserInterface());
 	this->application = new ApplicationController();
 	createInput();
 }
 
 void Editor::run()
 {
+	ExampleUI* ui = new ExampleUI();
+
 	while(!window->shouldClose())
 	{
 		window->update();
+		window->getUserInterface()->preRender();
 		application->render();
+		window->getUserInterface()->render();
 		window->swapBuffers();
 	}
+	window->getUserInterface()->destroy();
 	delete window;
 	delete application;
 	delete camera;

@@ -9,6 +9,7 @@
 #include <glm/mat4x4.hpp>
 
 #include "InputActions.h"
+#include "../ui/UserInterface.h"
 
 
 class Window
@@ -17,12 +18,12 @@ public:
 	Window(const GLint w, const GLint h);
 	~Window();
 
-	bool hasInitializedSuccessfully() const { return initializedSuccessfully;  }
+	bool hasInitializedSuccessfully() const { return initializedSuccessfully; }
 
 	GLfloat getBufferWidth() const { return (GLfloat)bWidth; }
 	GLfloat getBufferHeight() const { return (GLfloat)bHeight; }
 	glm::mat4 getProjectionMatrix() const { return projectionMatrix; }
-	glm::vec2 getMousePos() const { return mousePos;  }
+	glm::vec2 getMousePos() const { return mousePos; }
 
 	bool shouldClose() const { return glfwWindowShouldClose(window); }
 
@@ -51,6 +52,8 @@ public:
 	{
 		return fov;
 	}
+	GLFWwindow* getGLFWwindow() { return this->window; }
+	UserInterface* getUserInterface() { return &userInterface; }
 	
 private:
 	static Window* self;
@@ -64,6 +67,7 @@ private:
 	float fov = 45.0f;
 	bool initializedSuccessfully = false;
 	GLFWwindow* window;
+	UserInterface userInterface;
 
 	class CallbackList
 	{

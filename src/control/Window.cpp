@@ -3,6 +3,8 @@
 #include <unordered_map>
 #include <iostream>
 
+#include "imgui/imgui.h"
+
 std::unordered_map<Input::Action, Window::CallbackList> Window::callbacks;
 Window* Window::self;
 glm::vec2 Window::mousePos;
@@ -10,10 +12,15 @@ bool Window::keys[1024];
 float Window::dt = 0;
 float Window::lastTime = 0;
 
+static void glfw_error_callback(int error, const char* description)
+{
+	fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+}
+
 Window::Window(const GLint w, const GLint h)
 	:  bWidth(0), bHeight(0), width(w), height(h), projectionMatrix(glm::mat4())
 {
-
+	glfwSetErrorCallback(glfw_error_callback);
 	if (!glfwInit())
 	{
 		std::cout << "GLFW failed to initialize\n";
@@ -35,6 +42,7 @@ Window::Window(const GLint w, const GLint h)
 	glfwGetFramebufferSize(window, &bWidth, &bHeight);
 
 	glfwMakeContextCurrent(window);
+	glfwSwapInterval(1); // Enable vsync
 
 	glewExperimental = GL_TRUE;
 
@@ -69,6 +77,8 @@ Window::Window(const GLint w, const GLint h)
 
 	initializedSuccessfully = true;
 	self = this;
+
+	userInterface.init(*this);
 }
 
 Window::~Window()
@@ -146,6 +156,9 @@ void Window::mouseCallback(GLFWwindow* window, double x, double y)
 
 void Window::mouseButtonCallback(GLFWwindow* window, int key, int scancode, int action)
 {
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	if (io.WantCaptureMouse) return;
+
 	// save the old state
 	bool isClicked = keys[key];
 	// get wether this is a press or a release depending on the old state
@@ -160,6 +173,9 @@ void Window::mouseButtonCallback(GLFWwindow* window, int key, int scancode, int 
 
 void Window::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	if (io.WantCaptureMouse) return;
+
 	Input::Action action = (yoffset > 0) ? Input::Action::MOUSE_WHEEL_UP : Input::Action::MOUSE_WHEEL_DOWN;
 	callbacks[action].call(*self, 0, 0, dt);
 }
