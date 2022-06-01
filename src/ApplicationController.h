@@ -7,6 +7,8 @@
 #include "graphics/basic/Mesh.h"
 #include "graphics/basic/Texture.h"
 
+#include "ui/MaterialWidget.h"
+
 class ApplicationController
 {
 public:
@@ -24,6 +26,7 @@ private:
 
 	//Material* defaultMaterial;
 	Shader* shader;
+	MaterialWidget* materialWidget;
 
 	void createTriangle()
 	{

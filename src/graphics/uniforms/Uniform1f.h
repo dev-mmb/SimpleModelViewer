@@ -8,6 +8,7 @@ public:
 		: Uniform(n), value(0)
 	{}
 	void set(float v);
+	void renderUI() override;
 
 	void bind() override;
 private:

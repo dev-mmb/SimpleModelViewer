@@ -21,6 +21,14 @@ public:
 	template <class UNIFORM_TYPE, typename VALUE_TYPE>
 	void setUniform(const std::string& name, VALUE_TYPE value);
 
+	void renderUI()
+	{
+		for (auto u : uniforms)
+		{
+			u.second->renderUI();
+		}
+	}
+
 private:
 
 	ShaderProgram* shader;

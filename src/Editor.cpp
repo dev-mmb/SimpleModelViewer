@@ -11,7 +11,7 @@ Editor::Editor(int w, int h)
 	this->camera = new Camera(glm::vec3(0, 0, -5), glm::vec3(0, 1, 0), 0, 0, 10, w, h);
 	this->window = new Window(w, h);
 	EditorData::create(this);
-	UserInterfaceComponent::setUserInterface(window->getUserInterface());
+	Widget::setUserInterface(window->getUserInterface());
 	this->application = new ApplicationController();
 	createInput();
 }

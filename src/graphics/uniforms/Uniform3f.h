@@ -11,6 +11,7 @@ public:
 	: Uniform(n), value(glm::vec3())
 	{}
 	void set(const glm::vec3 vec);
+	void renderUI() override;
 
 	void bind() override;
 private:

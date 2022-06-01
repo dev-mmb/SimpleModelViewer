@@ -17,10 +17,13 @@ ApplicationController::ApplicationController()
 	shader->getMaterial("material").setUniform<Uniform1f, float>("specularIntensity", 5);
 	shader->getMaterial("material").setUniform<Uniform1f, float>("shine", 32);
 
+
 	shader->getMaterial("directionalLight").setUniform<Uniform1f, float>("diffuseIntensity", 3);
 	shader->getMaterial("directionalLight").setUniform<Uniform1f, float>("ambientIntensity", 3);
 	shader->getMaterial("directionalLight").setUniform<Uniform3f, glm::vec3>("direction", glm::vec3(2, -1, -2));
 	shader->getMaterial("directionalLight").setUniform<Uniform3f, glm::vec3>("color", glm::vec3(0.4f, 0.3f, 0.0f));
+	materialWidget = new MaterialWidget(&shader->getMaterial("directionalLight"));
+	materialWidget->addMaterial(&shader->getMaterial("material"));
 	shader->compile();
 }
 

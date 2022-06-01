@@ -2,12 +2,15 @@
 
 class UserInterface;
 
-class UserInterfaceComponent
+class Widget
 {
 public:
-	UserInterfaceComponent(UserInterface* u);
+	Widget(UserInterface* u);
 
 	virtual void render() {}
+
+	void hide();
+	void show();
 
 	static void setUserInterface(UserInterface* u);
 private:

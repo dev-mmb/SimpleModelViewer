@@ -97,6 +97,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\lib\stb\include;$(SolutionDir)\lib\glm;$(SolutionDir)\lib\glfw-3.3.7\include\GLFW;$(SolutionDir)\lib\glew-2.1.0\include\GL;$(SolutionDir)\src\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -114,6 +115,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\lib\stb\include;$(SolutionDir)\lib\glm;$(SolutionDir)\lib\glfw-3.3.7\include\GLFW;$(SolutionDir)\lib\glew-2.1.0\include\GL;$(SolutionDir)\src\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,6 +133,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\lib\stb\include;$(SolutionDir)\lib\glm;$(SolutionDir)\lib\glfw-3.3.7\include\GLFW;$(SolutionDir)\lib\glew-2.1.0\include\GL;$(SolutionDir)\src\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,6 +151,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\lib\stb\include;$(SolutionDir)\lib\glm;$(SolutionDir)\lib\glfw-3.3.7\include\GLFW;$(SolutionDir)\lib\glew-2.1.0\include\GL;$(SolutionDir)\src\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -159,13 +163,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\vendor\imgui\backend\imgui_impl_glfw.cpp" />
-    <ClCompile Include="src\vendor\imgui\backend\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="src\vendor\imgui\imgui.cpp" />
-    <ClCompile Include="src\vendor\imgui\imgui_demo.cpp" />
-    <ClCompile Include="src\vendor\imgui\imgui_draw.cpp" />
-    <ClCompile Include="src\vendor\imgui\imgui_tables.cpp" />
-    <ClCompile Include="src\vendor\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\ApplicationController.cpp" />
     <ClCompile Include="src\control\Camera.cpp" />
     <ClCompile Include="src\control\InputActions.cpp" />
@@ -183,18 +180,17 @@
     <ClCompile Include="src\graphics\uniforms\UniformMat4.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ui\UserInterface.cpp" />
-    <ClCompile Include="src\ui\UserInterfaceComponent.cpp" />
+    <ClCompile Include="src\ui\Widget.cpp" />
+    <ClCompile Include="src\vendor\imgui\backend\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\vendor\imgui\backend\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_demo.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_draw.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_tables.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\vendor\imgui\backend\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="src\vendor\imgui\backend\imgui_impl_glfw.h" />
-    <ClInclude Include="src\vendor\imgui\backend\imgui_impl_opengl3.h" />
-    <ClInclude Include="src\vendor\imgui\imconfig.h" />
-    <ClInclude Include="src\vendor\imgui\imgui.h" />
-    <ClInclude Include="src\vendor\imgui\imgui_internal.h" />
-    <ClInclude Include="src\vendor\imgui\imstb_rectpack.h" />
-    <ClInclude Include="src\vendor\imgui\imstb_textedit.h" />
-    <ClInclude Include="src\vendor\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\ui\MaterialWidget.h" />
     <ClInclude Include="src\ApplicationController.h" />
     <ClInclude Include="src\control\Camera.h" />
     <ClInclude Include="src\control\InputActions.h" />
@@ -213,10 +209,16 @@
     <ClInclude Include="src\graphics\uniforms\UniformMat4.h" />
     <ClInclude Include="src\ui\ExampleUI.h" />
     <ClInclude Include="src\ui\UserInterface.h" />
-    <ClInclude Include="src\ui\UserInterfaceComponent.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="src\vendor\imgui\LICENSE.txt" />
+    <ClInclude Include="src\ui\Widget.h" />
+    <ClInclude Include="src\vendor\imgui\backend\imgui_impl_glfw.h" />
+    <ClInclude Include="src\vendor\imgui\backend\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\vendor\imgui\backend\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="src\vendor\imgui\imconfig.h" />
+    <ClInclude Include="src\vendor\imgui\imgui.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_internal.h" />
+    <ClInclude Include="src\vendor\imgui\imstb_rectpack.h" />
+    <ClInclude Include="src\vendor\imgui\imstb_textedit.h" />
+    <ClInclude Include="src\vendor\imgui\imstb_truetype.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

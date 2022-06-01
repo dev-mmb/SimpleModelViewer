@@ -1,8 +1,12 @@
 #pragma once
 
+#include "imgui/imgui.h"
+
 #include <vector>
 
-#include "UserInterfaceComponent.h"
+#include "Widget.h"
+
+
 
 class Window;
 
@@ -17,9 +21,10 @@ public:
 	void preRender();
 	void render();
 
-	void addComponent(UserInterfaceComponent* component);
+	int addComponent(Widget* component);
+	void removeComponent(int i);
 
 private:
-	std::vector<UserInterfaceComponent*> components;
+	std::vector<Widget*> components;
 };
 
