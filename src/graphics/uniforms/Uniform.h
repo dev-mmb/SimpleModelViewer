@@ -3,10 +3,13 @@
 #include <glew.h>
 #include <string>
 
+/**
+ * \brief Uniforms should always be heap allocated!!!
+ */
 class Uniform
 {
 public:
-	virtual ~Uniform() = default;
+	virtual ~Uniform() {};
 	Uniform(std::string name);
 
 	void compile(GLuint shaderId);
@@ -15,12 +18,13 @@ public:
 
 	virtual void renderUI() {}
 	virtual void bind() {}
-	std::string getName() { return this->name; }
+	std::string getName() const { return this->name; }
+
 protected:
 	GLuint location;
 	std::string name;
 
-	std::string getNameWithoutMaterialName()
+	std::string getNameWithoutMaterialName() const
 	{
 		size_t p = name.find('.');
 		if (p == std::string::npos) return name;

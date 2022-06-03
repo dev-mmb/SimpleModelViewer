@@ -9,6 +9,7 @@ public:
 	UniformMat4(const std::string& n)
 	: Uniform(n), value(glm::mat4())
 	{}
+
 	void set(const glm::mat4 mat);
 
 	void bind() override;

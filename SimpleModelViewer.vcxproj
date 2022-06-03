@@ -178,6 +178,7 @@
     <ClCompile Include="src\graphics\uniforms\Uniform1i.cpp" />
     <ClCompile Include="src\graphics\uniforms\Uniform3f.cpp" />
     <ClCompile Include="src\graphics\uniforms\UniformMat4.cpp" />
+    <ClCompile Include="src\graphics\uniforms\UniformSampler2D.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ui\UserInterface.cpp" />
     <ClCompile Include="src\ui\Widget.cpp" />
@@ -188,9 +189,11 @@
     <ClCompile Include="src\vendor\imgui\imgui_draw.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui_tables.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\graphics\StaticMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\ui\MaterialWidget.h" />
+    <ClInclude Include="src\graphics\uniforms\UniformSampler2D.h" />
+    <ClInclude Include="src\ui\StaticMeshPropertiesWidget.h" />
     <ClInclude Include="src\ApplicationController.h" />
     <ClInclude Include="src\control\Camera.h" />
     <ClInclude Include="src\control\InputActions.h" />
@@ -219,6 +222,7 @@
     <ClInclude Include="src\vendor\imgui\imstb_rectpack.h" />
     <ClInclude Include="src\vendor\imgui\imstb_textedit.h" />
     <ClInclude Include="src\vendor\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\graphics\StaticMesh.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

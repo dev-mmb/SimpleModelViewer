@@ -3,11 +3,12 @@
 #include <vector>
 
 #include "graphics/Shader.h"
+#include "graphics/StaticMesh.h"
 #include "graphics/basic/Material.h"
 #include "graphics/basic/Mesh.h"
 #include "graphics/basic/Texture.h"
 
-#include "ui/MaterialWidget.h"
+#include "ui/StaticMeshPropertiesWidget.h"
 
 class ApplicationController
 {
@@ -21,15 +22,13 @@ private:
 	std::string vertexShaderSource = "assets/vertexShader.glsl";
 
 	std::string fragmentShaderSource = "assets/fragmentShader.glsl";
-	Texture* brickTexture;
-	std::vector<Mesh*> meshes;
 
-	//Material* defaultMaterial;
-	Shader* shader;
-	MaterialWidget* materialWidget;
+	StaticMeshPropertiesWidget* materialWidget;
+	StaticMesh* mesh;
 
-	void createTriangle()
+	std::vector<Mesh*> createTriangle()
 	{
+		std::vector<Mesh*> meshes;
 		GLfloat vertices[] = {
 			// x, y, z, u, v
 			-1.0f, -1.0f, 0.0f,	 0.0f, 0.0f,	0.0f, 0.0f, 0.0f,
@@ -49,6 +48,7 @@ private:
 		Mesh* m = new Mesh();
 		m->create(vertices, indices, 32, 12);
 		meshes.push_back(m);
+		return meshes;
 	}
 
 	void calculateAverageNormals(unsigned int* indices, unsigned int indiceCount, GLfloat* vertices,

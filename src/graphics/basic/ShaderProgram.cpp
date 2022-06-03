@@ -12,6 +12,7 @@
 #include "../uniforms/Uniform3f.h"
 #include "../uniforms/Uniform1i.h"
 #include "../uniforms/UniformMat4.h"
+#include "../uniforms/UniformSampler2D.h"
 
 ShaderProgram::ShaderProgram()
 	: id(0)
@@ -41,7 +42,7 @@ void ShaderProgram::createFromFile(const std::string& vertexShaderFileName, cons
 
 void ShaderProgram::compile()
 {
-	for (Uniform* uniform : uniforms)
+	for (auto& uniform : uniforms)
 	{
 		uniform->compile(id);
 	}
@@ -50,10 +51,9 @@ void ShaderProgram::compile()
 void ShaderProgram::bind()
 {
 	glUseProgram(id);
-	for (Uniform* uniform : uniforms)
+	for (auto& uniform : uniforms)
 	{
-		if (uniform != nullptr)
-			uniform->bind();
+		uniform->bind();
 	}
 }
 
@@ -62,9 +62,29 @@ void ShaderProgram::unBind()
 	glUseProgram(0);
 }
 
-std::vector<Uniform*> ShaderProgram::getAllUniformsFromMaterial(const std::string& materialName) const
+std::unordered_map<std::string, int> ShaderProgram::getAllUniformsFromMaterial(const std::string& materialName) const
 {
-	std::vector<Uniform*> uniforms;
+	std::unordered_map<std::string, int> uniformIds;
+
+	for (int i = 0; i < this->uniforms.size(); i++)
+	{
+		auto& uniform = this->uniforms[i];
+		size_t dotPos = uniform->getName().find('.');
+		if (dotPos != std::string::npos)
+		{
+			const std::string material = uniform->getName().substr(0, dotPos);
+			if (material == materialName)
+			{
+				uniformIds[uniform->getName().substr(uniform->getName().find('.') + 1)] = i;
+			}
+		}
+	}
+
+	return uniformIds;
+}
+
+void ShaderProgram::getAllUniforms()
+{
 	GLint count;
 	GLint size; // size of the variable
 	GLenum type; // type of the variable (float, vec3 or mat4, etc)
@@ -78,51 +98,44 @@ std::vector<Uniform*> ShaderProgram::getAllUniformsFromMaterial(const std::strin
 	{
 		glGetActiveUniform(id, (GLuint)i, bufSize, &length, &size, &type, namebuffer);
 
-
 		std::string name = namebuffer;
-		size_t dotPos = name.find('.');
+		size_t dotPos =  name.find('.');
+
 		if (dotPos != std::string::npos)
 		{
-			try
-			{
-				const std::string material = name.substr(0, dotPos);
-				const std::string uniformName = name.substr(dotPos + 1);
-				if (material == materialName)
-				{
-					uniforms.push_back(createUniform(name, type));
-				}
-			}
-			catch (const std::exception& e) {
-				std::cout << "Error getting uniforms for material: " << materialName << " uniform: " << name << "\n";
-			}
+			createUniform(name, type);
 		}
 	}
-
-	return uniforms;
 }
 
-Uniform* ShaderProgram::createUniform(const std::string& name, GLenum type) const
+void ShaderProgram::createUniform(const std::string& name, GLenum type)
 {
 	if (type == GL_FLOAT)
 	{
-		return new Uniform1f(name);
+		 this->uniforms.push_back(new Uniform1f(name));
 	}
 	else if (type == GL_FLOAT_VEC3)
 	{
-		return new Uniform3f(name);
+		this->uniforms.push_back(new Uniform3f(name));
 	}
 	else if (type == GL_FLOAT_MAT4)
 	{
-		return new UniformMat4(name);
+		this->uniforms.push_back(new UniformMat4(name));
 	}
 	else if (type == GL_INT)
 	{
-		return new Uniform1i(name);
+		this->uniforms.push_back(new Uniform1i(name));
 	}
-
-	std::cout << "error creating uniform of type: " << type_set[type] << " with name: " << name << "\n";
-	return new Uniform(name);
+	else if (type == GL_SAMPLER_2D)
+	{
+		this->uniforms.push_back(new UniformSampler2D(name));
+	}
+	else
+	{
+		std::cout << "error creating uniform of type: " << type_set[type] << " with name: " << name << "\n";
+	}
 }
+
 
 void ShaderProgram::compileShader(const std::string& vertexShader, const std::string& fragmentShader)
 {
@@ -143,6 +156,8 @@ void ShaderProgram::compileShader(const std::string& vertexShader, const std::st
 
 	glValidateProgram(id);
 	if (hasErrors(id)) return;
+
+	getAllUniforms();
 }
 
 void ShaderProgram::addShader(GLuint program, const std::string& code, GLenum shaderType)
@@ -180,7 +195,6 @@ std::string ShaderProgram::readFile(const std::string& file)
 
 bool ShaderProgram::hasErrors(GLuint value)
 {
-
 	GLint result = 0;
 	GLchar log[1024] = { 0 };
 
@@ -192,7 +206,41 @@ bool ShaderProgram::hasErrors(GLuint value)
 		return true;
 	}
 	return false;
-
 }
 
 
+template <class UNIFORM_TYPE, typename VALUE_TYPE>
+void ShaderProgram::setUniform(const std::string& name, VALUE_TYPE value)
+{}
+template<>
+void ShaderProgram::setUniform<Uniform1f, float>(const std::string& name, float value)
+{
+	auto u = getUniformPointer(name);
+	if (u == nullptr) return;
+	auto castedUniform = dynamic_cast<Uniform1f*>(u);
+	castedUniform->set(value);
+}
+template<>
+void ShaderProgram::setUniform<Uniform1i, int>(const std::string& name, int value)
+{
+	auto u = getUniformPointer(name);
+	if (u == nullptr) return;
+	auto castedUniform = dynamic_cast<Uniform1i*>(u);
+	castedUniform->set(value);
+}
+template<>
+void ShaderProgram::setUniform<Uniform3f, glm::vec3>(const std::string& name, glm::vec3 value)
+{
+	auto u = getUniformPointer(name);
+	if (u == nullptr) return;
+	auto castedUniform = dynamic_cast<Uniform3f*>(u);
+	castedUniform->set(value);
+}
+template<>
+void ShaderProgram::setUniform<UniformMat4, glm::mat4>(const std::string& name, glm::mat4 value)
+{
+	auto u = getUniformPointer(name);
+	if (u == nullptr) return;
+	auto castedUniform = dynamic_cast<UniformMat4*>(u);
+	castedUniform->set(value);
+}

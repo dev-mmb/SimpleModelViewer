@@ -7,6 +7,7 @@ public:
 	Uniform1f(const std::string& n)
 		: Uniform(n), value(0)
 	{}
+
 	void set(float v);
 	void renderUI() override;
 

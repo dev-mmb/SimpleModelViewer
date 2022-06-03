@@ -1,25 +1,27 @@
 #include "Shader.h"
 #include "../Editor.h"
 
+#include "imgui/imgui.h"
+
+
 Shader::Shader(const std::string& vshader, const std::string& fshader) :
-	model(UniformMat4("model")),
-	projection(UniformMat4("projection")),
-	view(UniformMat4("view")),
-	viewPosition(Uniform3f("viewPosition"))
+	model(new UniformMat4("model")),
+	projection(new UniformMat4("projection")),
+	view(new UniformMat4("view")),
+	viewPosition(new Uniform3f("viewPosition"))
 {
 	shaderProgram = new ShaderProgram();
 
-	projection.set(EditorData::getProjectionMatrix());
-	view.set(EditorData::getViewMatrix());
-	viewPosition.set(EditorData::getViewPosition());
+	projection->set(EditorData::getProjectionMatrix());
+	view->set(EditorData::getViewMatrix());
+	viewPosition->set(EditorData::getViewPosition());
 
-	shaderProgram->addUniform(&model);
-	shaderProgram->addUniform(&view);
-	shaderProgram->addUniform(&projection);
-	shaderProgram->addUniform(&viewPosition);
+	shaderProgram->addUniform(model);
+	shaderProgram->addUniform(view);
+	shaderProgram->addUniform(projection);
+	shaderProgram->addUniform(viewPosition);
 
 	shaderProgram->createFromFile(vshader, fshader);
-
 }
 
 Shader::~Shader()
@@ -58,9 +60,9 @@ void Shader::addUniform(Uniform* uniform)
 void Shader::bind()
 {
 	shaderProgram->bind();
-	projection.set(EditorData::getProjectionMatrix());
-	view.set(EditorData::getViewMatrix());
-	viewPosition.set(EditorData::getViewPosition());
+	projection->set(EditorData::getProjectionMatrix());
+	view->set(EditorData::getViewMatrix());
+	viewPosition->set(EditorData::getViewPosition());
 }
 
 void Shader::unBind()
@@ -72,3 +74,13 @@ void Shader::compile()
 {
 	this->shaderProgram->compile();
 }
+
+void Shader::renderMaterialsUi()
+{
+	for (auto m : materials)
+	{
+		ImGui::BulletText(m->getName().c_str());
+		m->renderUi();
+	}
+}
+
