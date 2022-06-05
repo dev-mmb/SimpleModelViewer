@@ -8,12 +8,13 @@
 class StaticMesh
 {
 public:
-	StaticMesh(Shader* shader, Mesh* mesh);
+	StaticMesh(const std::string& vshader, const std::string& fshader, Mesh* mesh);
 	~StaticMesh();
 	void render() const;
 	void renderMaterialsUi();
 
 	void addMesh(Mesh* mesh);
+	void createNewShader(const std::string& vshader, const std::string& fshader);
 
 	void setPosition(const glm::vec3& position){ this->position = position; }
 	glm::vec3 getPosition() const { return position; }
@@ -22,8 +23,10 @@ public:
 	void setScale(const glm::vec3& scale) { this->scale = scale; }
 	glm::vec3 getScale() const { return scale; }
 
+	std::string getVertexShaderSource() const { return shader->getVertexShaderSource(); }
+	std::string getFragmentShaderSource() const { return shader->getFragmentShaderSource(); }
 private:
-	Shader* shader;
+	Shader* shader = nullptr;
 	Texture* brickTexture;
 
 	std::vector<Mesh*> meshes;

@@ -191,5 +191,8 @@
     <ClInclude Include="src\graphics\StaticMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\vendor\L2DFileDialog\L2DFileDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

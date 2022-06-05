@@ -2,11 +2,14 @@
 
 #include <glm/ext/matrix_transform.hpp>
 
+#include "uniforms/Uniform1f.h"
+
 const float toRadians = 3.14159265f / 180.f;
 
-StaticMesh::StaticMesh(Shader* shader, Mesh* mesh)
+StaticMesh::StaticMesh(const std::string& vshader, const std::string& fshader, Mesh* mesh)
 {
-	this->shader = shader; this->addMesh(mesh);
+	createNewShader(vshader, fshader);
+	this->addMesh(mesh);
 	brickTexture = new Texture("assets/textures/brick.png");
 	brickTexture->load();
 }
@@ -52,4 +55,25 @@ void StaticMesh::renderMaterialsUi()
 void StaticMesh::addMesh(Mesh* mesh)
 {
 	this->meshes.push_back(mesh);
+}
+
+void StaticMesh::createNewShader(const std::string& vshader, const std::string& fshader)
+{
+	if (shader != nullptr)
+	{
+		delete shader;
+	}
+	this->shader = new Shader(vshader, fshader);
+
+	shader->addMaterial("material");
+	shader->addMaterial("directionalLight");
+	shader->getMaterial("material").setUniform<Uniform1f, float>("specularIntensity", 5);
+	shader->getMaterial("material").setUniform<Uniform1f, float>("shine", 32);
+
+	shader->getMaterial("directionalLight").setUniform<Uniform1f, float>("diffuseIntensity", 3);
+	shader->getMaterial("directionalLight").setUniform<Uniform1f, float>("ambientIntensity", 3);
+	shader->getMaterial("directionalLight").setUniform<Uniform3f, glm::vec3>("direction", glm::vec3(2, -1, -2));
+	shader->getMaterial("directionalLight").setUniform<Uniform3f, glm::vec3>("color", glm::vec3(0.4f, 0.3f, 0.0f));
+
+	shader->compile();
 }

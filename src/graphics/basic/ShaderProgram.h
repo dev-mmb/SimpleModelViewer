@@ -38,10 +38,14 @@ public:
 	}
 	// returns the first uniform if not found
 	Uniform& getUniform(const std::string& name) { return *getUniformPointer(name); }
+
+	std::string getVertexShaderSource() const { return vertexShader; }
+	std::string getFragmentShaderSource() const { return fragmentShader; }
 	
 private:
 	GLuint id;
 	std::vector<Uniform*> uniforms;
+	std::string vertexShader, fragmentShader; 
 
 	void compileShader(const std::string& vertexShader, const std::string& fragmentShader);
 	void addShader(GLuint program, const std::string& code, GLenum shaderType);
