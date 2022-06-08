@@ -3,7 +3,7 @@
 #include <iostream>
 #include <math.h>
 
-Camera::Camera(glm::vec3 initialPos, glm::vec3 up, GLfloat yaw, GLfloat pitch, GLfloat movementSpeed, int viewPortWidht, int viewPortHeight)
+Camera::Camera(glm::vec3 initialPos, glm::vec3 up,  GLfloat movementSpeed, int viewPortWidht, int viewPortHeight)
 	: pos(initialPos), worldUp(up), movementSpeed(movementSpeed), turnSpeed(0.5)
 {
 	viewPortW = viewPortWidht; viewPortH = viewPortHeight;
@@ -62,9 +62,21 @@ void Camera::rotate(float xChange, float yChange)
 	calculateViewMatrix();
 }
 
+void Camera::setPos(const glm::vec3& p)
+{
+	this->pos = p;
+	calculateViewMatrix();
+}
+
 glm::mat4 Camera::getViewMatrix() const
 {
 	return viewMatrix;
+}
+
+void Camera::setFocus(const glm::vec3& f)
+{
+	this->focus = f;
+	calculateViewMatrix();
 }
 
 void Camera::calculateViewMatrix()

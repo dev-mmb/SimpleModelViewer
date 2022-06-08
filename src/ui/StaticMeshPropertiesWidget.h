@@ -2,13 +2,13 @@
 #include "Widget.h"
 #include <imgui/imgui.h>
 #include <vector>
-#include "../graphics/StaticMesh.h"
+#include "../graphics/Model.h"
 #include <L2DFileDialog/L2DFileDialog.h>
 
 class StaticMeshPropertiesWidget : public Widget
 {
 public:
-	StaticMeshPropertiesWidget(StaticMesh* mesh) : Widget(userInterface)
+	StaticMeshPropertiesWidget(Model* mesh) : Widget(userInterface)
 	{
 		this->mesh = mesh;
 	}
@@ -45,14 +45,14 @@ public:
 				{
 					if (validateShaderPath(currentPath))
 					{
-						if (vertexIsOpen) 
+						if (vertexIsOpen)
 							mesh->createNewShader(currentPath, mesh->getFragmentShaderSource());
-						else if (fragmentIsOpen) 
+						else if (fragmentIsOpen)
 							mesh->createNewShader(mesh->getVertexShaderSource(), currentPath);
 						vertexIsOpen = false;
 						fragmentIsOpen = false;
 					}
-					
+
 				}
 			}
 		}
@@ -64,7 +64,7 @@ public:
 	}
 
 private:
-	StaticMesh* mesh;
+	Model* mesh;
 	std::string currentPath = "";
 	bool vertexIsOpen = false, fragmentIsOpen = false;
 

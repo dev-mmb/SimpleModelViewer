@@ -93,7 +93,7 @@
     <ClCompile Include="src\graphics\uniforms\UniformSampler2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\StaticMesh.cpp">
+    <ClCompile Include="src\graphics\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -188,10 +188,10 @@
     <ClInclude Include="src\graphics\uniforms\UniformSampler2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\StaticMesh.h">
+    <ClInclude Include="src\vendor\L2DFileDialog\L2DFileDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\vendor\L2DFileDialog\L2DFileDialog.h">
+    <ClInclude Include="src\graphics\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

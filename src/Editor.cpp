@@ -8,7 +8,7 @@ Editor* EditorData::editor;
 
 Editor::Editor(int w, int h)
 {
-	this->camera = new Camera(glm::vec3(0, 0, -5), glm::vec3(0, 1, 0), 0, 0, 10, w, h);
+	this->camera = new Camera(glm::vec3(0, 0, -5), glm::vec3(0, 1, 0), 10, w, h);
 	this->window = new Window(w, h);
 	EditorData::create(this);
 	Widget::setUserInterface(window->getUserInterface());
@@ -18,7 +18,7 @@ Editor::Editor(int w, int h)
 
 void Editor::run()
 {
-	ExampleUI* ui = new ExampleUI();
+	const auto ui = new ExampleUI();
 
 	while(!window->shouldClose())
 	{
@@ -32,6 +32,7 @@ void Editor::run()
 	delete window;
 	delete application;
 	delete camera;
+	delete ui;
 }
 
 void Editor::close()
@@ -43,7 +44,7 @@ void Editor::createInput()
 {
 	window->subscribe(Input::Action::MOUSE_MOVEMENT, [this](const Window& w, int action, int mods, float dt)
 		{
-			if (mouseLeftClicked)
+			if (mouseLeftClicked || mouseRightClicked)
 			{
 				glm::vec2 mousePos = w.getMousePos();
 				if (mouseFirstMoved)
@@ -56,7 +57,8 @@ void Editor::createInput()
 				yChange = lastY - mousePos.y;
 				lastX = mousePos.x;
 				lastY = mousePos.y;
-				camera->rotate(-xChange, yChange);
+				if (mouseLeftClicked)
+					camera->rotate(-xChange, yChange);
 			}
 		});
 	window->subscribe(Input::Action::MOUSE_CLICK_LEFT, [this](const Window& w, int action, int mods, float dt)

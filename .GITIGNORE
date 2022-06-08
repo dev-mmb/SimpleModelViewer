@@ -9,6 +9,9 @@
 /lib/stb/
 /lib/glfw-3.3.7/
 /lib/glew-2.1.0/
+/lib/assimp/
+
+/assets/models/
 
 # User-specific files
 *.rsuser

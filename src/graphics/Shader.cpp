@@ -10,6 +10,7 @@ Shader::Shader(const std::string& vshader, const std::string& fshader) :
 	view(new UniformMat4("view")),
 	viewPosition(new Uniform3f("viewPosition"))
 {
+	this->vShader = vshader; this->fShader = fshader;
 	shaderProgram = new ShaderProgram();
 
 	projection->set(EditorData::getProjectionMatrix());

@@ -12,6 +12,12 @@ struct DirectionalLight {
 	vec3 direction;
 	float diffuseIntensity;
 };
+struct PointLight {
+	vec3 pos;
+	float constant;
+	float linear;
+	float exponent;
+};
 
 struct Material {
 	float specularIntensity;

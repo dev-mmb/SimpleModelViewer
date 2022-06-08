@@ -6,6 +6,8 @@
 class ExampleUI : public Widget
 {
 public:
+	virtual ~ExampleUI() = default;
+
 	ExampleUI() : Widget(userInterface)
 	{}
 

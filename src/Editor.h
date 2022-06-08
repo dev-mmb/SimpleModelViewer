@@ -20,7 +20,7 @@ private:
 	Camera* camera;
 	ApplicationController* application;
 	GLfloat lastX = 0, lastY = 0, xChange = 0, yChange = 0;
-	bool mouseFirstMoved = true, mouseLeftClicked = false;
+	bool mouseFirstMoved = true, mouseLeftClicked = false, mouseRightClicked = false;
 
 	void close();
 	void createInput();

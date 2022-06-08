@@ -8,7 +8,7 @@
 class Camera
 {
 public:
-	Camera(glm::vec3 initialPos, glm::vec3 up, GLfloat yaw, GLfloat pitch, GLfloat movementSpeed, int viewPortWidht, int viewPortHeight);
+	Camera(glm::vec3 initialPos, glm::vec3 up, GLfloat movementSpeed, int viewPortWidht, int viewPortHeight);
 
 	void moveForward(float dt);
 	void moveBackwards(float dt);
@@ -17,6 +17,7 @@ public:
 	void rotate(float xChange, float yChange);
 
 	glm::vec3 getPos() const { return pos; }
+	void setPos(const glm::vec3& p);
 
 	glm::mat4 getViewMatrix() const;
 	glm::vec3 getViewDirection() const
@@ -27,6 +28,9 @@ public:
 	{
 		return glm::transpose(getViewMatrix())[0];
 	}
+	glm::vec3 getFocus() const { return this->focus; }
+	void setFocus(const glm::vec3& f);
+
 private:
 	glm::vec3 pos;
 	glm::vec3 right;
