@@ -20,10 +20,10 @@ public:
 
 	void setModel(const glm::mat4& m) { model->set(m); }
 
-	std::string getVertexShaderSource() const { return shaderProgram->getVertexShaderSource(); }
-	std::string getFragmentShaderSource() const { return shaderProgram->getFragmentShaderSource(); }
-
+	std::string getVShader() const { return vShader; }
+	std::string getFShader() const { return fShader; }
 private:
+	std::string vShader, fShader;
 	ShaderProgram* shaderProgram;
 	std::vector<Material*> materials;
 	UniformMat4* model, *projection, *view;

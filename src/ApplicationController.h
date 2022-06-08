@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "graphics/Shader.h"
-#include "graphics/StaticMesh.h"
+#include "graphics/Model.h"
 #include "graphics/basic/Material.h"
 #include "graphics/basic/Mesh.h"
 #include "graphics/basic/Texture.h"
@@ -24,7 +24,7 @@ private:
 	std::string fragmentShaderSource = "assets/fragmentShader.glsl";
 
 	StaticMeshPropertiesWidget* materialWidget;
-	StaticMesh* mesh;
+	Model* mesh;
 
 	std::vector<Mesh*> createTriangle()
 	{

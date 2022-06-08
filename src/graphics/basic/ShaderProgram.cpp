@@ -35,7 +35,6 @@ void ShaderProgram::createFromString(const std::string& vertexShader, const std:
 
 void ShaderProgram::createFromFile(const std::string& vertexShaderFileName, const std::string& fragmentShaderFileName)
 {
-	this->vertexShader = vertexShaderFileName; this->fragmentShader = fragmentShaderFileName;
 	std::string vertexShader = readFile(vertexShaderFileName);
 	std::string fragmentShader = readFile(fragmentShaderFileName);
 	compileShader(vertexShader, fragmentShader);

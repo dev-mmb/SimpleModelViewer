@@ -2,8 +2,8 @@
 
 #include <utility>
 #include <iostream>
-
 #define STB_IMAGE_IMPLEMENTATION
+
 #include "stb_image.h"
 
 Texture::Texture(std::string fileLoc)
@@ -11,12 +11,13 @@ Texture::Texture(std::string fileLoc)
 {
 }
 
-void Texture::load()
+bool Texture::load()
 {
 	unsigned char* data = stbi_load(fileLocation.c_str(), &width, &height, &bitDepth, 0);
 	if (!data)
 	{
 		std::cout << "failed to find texture location: " << fileLocation << "\n";
+		return false;
 	}
 
 	glGenTextures(1, &id);
@@ -32,6 +33,7 @@ void Texture::load()
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	stbi_image_free(data);
+	return true;
 }
 
 void Texture::use()

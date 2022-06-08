@@ -17,6 +17,7 @@ private:
 	int id;
 
 protected:
+	~Widget() = default;
 	static UserInterface* userInterface;
 };
 

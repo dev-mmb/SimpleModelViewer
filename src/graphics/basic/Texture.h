@@ -6,7 +6,7 @@ class Texture
 public:
 	Texture(std::string fileLoc);
 
-	void load();
+	bool load();
 	void use();
 	void clear();
 
