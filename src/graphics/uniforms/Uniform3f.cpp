@@ -10,7 +10,7 @@ void Uniform3f::set(const glm::vec3 vec)
 void Uniform3f::renderUI()
 {
 	float vec[3] = { value.x, value.y, value.z };
-	ImGui::DragFloat3(getNameWithoutMaterialName().c_str(), vec);
+	ImGui::DragFloat3(this->getUniqueDisplayName().c_str(), vec);
 	value.x = vec[0]; value.y = vec[1]; value.z = vec[2];
 }
 

@@ -8,6 +8,9 @@
 #include "Shader.h"
 #include "basic/Mesh.h"
 #include "basic/Texture.h"
+#include "light/DirectionalLight.h"
+#include "light/PointLight.h"
+
 
 class Model
 {
@@ -33,6 +36,8 @@ public:
 
 private:
 	Shader* shader = nullptr;
+	DirectionalLight* directionalLight;
+	std::vector<PointLight*> pointLights;
 
 	std::vector<Mesh*> meshes;
 	std::vector<Texture*> textures;

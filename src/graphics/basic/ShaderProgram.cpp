@@ -75,7 +75,7 @@ std::unordered_map<std::string, int> ShaderProgram::getAllUniformsFromMaterial(c
 			const std::string material = uniform->getName().substr(0, dotPos);
 			if (material == materialName)
 			{
-				uniformIds[uniform->getName().substr(uniform->getName().find('.') + 1)] = i;
+				uniformIds[uniform->getName()] = i;
 			}
 		}
 	}
@@ -99,8 +99,7 @@ void ShaderProgram::getAllUniforms()
 		glGetActiveUniform(id, (GLuint)i, bufSize, &length, &size, &type, namebuffer);
 
 		std::string name = namebuffer;
-		size_t dotPos =  name.find('.');
-
+		size_t dotPos = name.find('.');
 		if (dotPos != std::string::npos)
 		{
 			createUniform(name, type);

@@ -90,14 +90,16 @@ void Model::createNewShader(const std::string& vshader, const std::string& fshad
 	this->shader = new Shader(vshader, fshader);
 
 	shader->addMaterial("material");
-	shader->addMaterial("directionalLight");
 	shader->getMaterial("material").setUniform<Uniform1f, float>("specularIntensity", 5);
 	shader->getMaterial("material").setUniform<Uniform1f, float>("shine", 32);
 
-	shader->getMaterial("directionalLight").setUniform<Uniform1f, float>("diffuseIntensity", 3);
-	shader->getMaterial("directionalLight").setUniform<Uniform1f, float>("ambientIntensity", 3);
-	shader->getMaterial("directionalLight").setUniform<Uniform3f, glm::vec3>("direction", glm::vec3(2, -1, -2));
-	shader->getMaterial("directionalLight").setUniform<Uniform3f, glm::vec3>("color", glm::vec3(0.4f, 0.3f, 0.0f));
+	directionalLight = new DirectionalLight(shader, "directionalLight");
+
+	for (size_t i = 0; i < PointLight::MAX_POINT_LIGHTS; i++)
+	{
+		std::string name = "pointLights[";
+		pointLights.push_back(new PointLight{ shader, name + std::to_string(i) + std::string("]")});
+	}
 
 	shader->compile();
 }
