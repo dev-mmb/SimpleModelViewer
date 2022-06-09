@@ -30,5 +30,9 @@ protected:
 		if (p == std::string::npos) return name;
 		return name.substr(p + 1);
 	}
+	std::string getUniqueDisplayName() const
+	{
+		return getNameWithoutMaterialName() + ", " + name;
+	}
 };
 

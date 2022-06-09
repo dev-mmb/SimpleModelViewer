@@ -9,7 +9,7 @@ void Uniform1f::set(float v)
 
 void Uniform1f::renderUI()
 {
-	ImGui::DragFloat(getNameWithoutMaterialName().c_str(), &value);
+	ImGui::DragFloat(getUniqueDisplayName().c_str(), &value);
 }
 
 void Uniform1f::bind()
