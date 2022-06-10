@@ -105,6 +105,9 @@
     <ClCompile Include="src\graphics\light\PointLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\control\Camera.h">
@@ -164,7 +167,7 @@
     <ClInclude Include="src\ui\ExampleUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ui\StaticMeshPropertiesWidget.h">
+    <ClInclude Include="src\ui\ScenePropertiesWidget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\vendor\imgui\backend\imgui_impl_glfw.h">
@@ -210,6 +213,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\light\PointLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

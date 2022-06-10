@@ -15,15 +15,10 @@
 class Model
 {
 public:
-	Model(const std::string& vshader, const std::string& fshader, const std::string& modelFileName);
-	Model(const std::string& vshader, const std::string& fshader, Mesh* m);
+	Model(const std::string& name, const std::string& modelFileName);
+	Model(const std::string& name, Mesh* m);
 	~Model();
-	void render() const;
-	void renderMaterialsUi();
-
-	void createNewShader(const std::string& vshader, const std::string& fshader);
-	std::string getFragmentShaderSource() const { return shader->getFShader(); }
-	std::string getVertexShaderSource() const { return shader->getVShader(); }
+	void render(Shader* shader);
 
 	void addMesh(Mesh* mesh);
 
@@ -33,12 +28,10 @@ public:
 	glm::vec3 getRotation() const { return rotation; }
 	void setScale(const glm::vec3& scale) { this->scale = scale; }
 	glm::vec3 getScale() const { return scale; }
+	std::string getname() const { return name; }
 
 private:
-	Shader* shader = nullptr;
-	DirectionalLight* directionalLight;
-	std::vector<PointLight*> pointLights;
-
+	std::string name;
 	std::vector<Mesh*> meshes;
 	std::vector<Texture*> textures;
 	std::vector<unsigned int> textureIndexes;

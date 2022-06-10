@@ -8,7 +8,7 @@
 #include "graphics/basic/Mesh.h"
 #include "graphics/basic/Texture.h"
 
-#include "ui/StaticMeshPropertiesWidget.h"
+#include "ui/ScenePropertiesWidget.h"
 
 class ApplicationController
 {
@@ -23,8 +23,8 @@ private:
 
 	std::string fragmentShaderSource = "assets/fragmentShader.glsl";
 
-	StaticMeshPropertiesWidget* materialWidget;
-	Model* mesh;
+	ScenePropertiesWidget* materialWidget;
+	Scene* scene;
 
 	std::vector<Mesh*> createTriangle()
 	{

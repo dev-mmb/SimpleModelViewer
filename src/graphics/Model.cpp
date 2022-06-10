@@ -7,9 +7,9 @@
 
 const float toRadians = 3.14159265f / 180.f;
 
-Model::Model(const std::string& vshader, const std::string& fshader, const std::string& modelFileName)
+Model::Model(const std::string& name, const std::string& modelFileName)
 {
-	createNewShader(vshader, fshader);
+	this->name = name;
 	const aiScene* scene = importer.ReadFile(modelFileName.c_str(), 
 		aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
 	if (!scene)
@@ -22,9 +22,9 @@ Model::Model(const std::string& vshader, const std::string& fshader, const std::
 	loadTextures(scene);
 }
 
-Model::Model(const std::string& vshader, const std::string& fshader, Mesh* m)
+Model::Model(const std::string& name, Mesh* m)
 {
-	createNewShader(vshader, fshader);
+	this->name = name;
 	this->meshes.push_back(m);
 	this->textures.push_back(new Texture("assets/textures/brick.png"));
 	this->textures[0]->load();
@@ -48,10 +48,9 @@ Model::~Model()
 	meshes.clear();
 	textures.clear();
 	textureIndexes.clear();
-	delete shader;
 }
 
-void Model::render() const
+void Model::render(Shader* shader)
 {
 	shader->bind();
 	glm::mat4 model(1.0f);
@@ -73,35 +72,6 @@ void Model::render() const
 	}
 
 	shader->unBind();
-
-}
-
-void Model::renderMaterialsUi()
-{
-	shader->renderMaterialsUi();
-}
-
-void Model::createNewShader(const std::string& vshader, const std::string& fshader)
-{
-	if (shader != nullptr)
-	{
-		delete shader;
-	}
-	this->shader = new Shader(vshader, fshader);
-
-	shader->addMaterial("material");
-	shader->getMaterial("material").setUniform<Uniform1f, float>("specularIntensity", 5);
-	shader->getMaterial("material").setUniform<Uniform1f, float>("shine", 32);
-
-	directionalLight = new DirectionalLight(shader, "directionalLight");
-
-	for (size_t i = 0; i < PointLight::MAX_POINT_LIGHTS; i++)
-	{
-		std::string name = "pointLights[";
-		pointLights.push_back(new PointLight{ shader, name + std::to_string(i) + std::string("]")});
-	}
-
-	shader->compile();
 }
 
 void Model::loadNode(aiNode* node, const aiScene* scene)
