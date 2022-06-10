@@ -9,8 +9,8 @@ ApplicationController::ApplicationController()
 
 	scene = new Scene(vertexShaderSource, fragmentShaderSource);
 	scene->addModel(new Model("3D triangle", createTriangle()[0]));
-	scene->addModel(new Model("3D triangle1", createTriangle()[0]));
-	scene->addModel(new Model("3D triangle2", createTriangle()[0]));
+	//scene->addModel(new Model("3D triangle1", createTriangle()[0]));
+	//scene->addModel(new Model("3D triangle2", createTriangle()[0]));
 
 	materialWidget = new ScenePropertiesWidget(scene);
 }

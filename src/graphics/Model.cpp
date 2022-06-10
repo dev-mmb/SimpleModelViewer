@@ -4,8 +4,16 @@
 
 #include "uniforms/Uniform1f.h"
 #include <iostream>
+#include <assimp/postprocess.h>
+
+#include "imgui/imgui.h"
+#include "uniforms/UniformSampler2D.h"
 
 const float toRadians = 3.14159265f / 180.f;
+const std::string Model::AMBIENT_NAME = "ambient";
+const std::string Model::DIFFUSE_NAME = "diffuse";
+const std::string Model::SPECULAR_NAME = "specular";
+const std::string Model::SHINE_NAME = "shine";
 
 Model::Model(const std::string& name, const std::string& modelFileName)
 {
@@ -26,8 +34,10 @@ Model::Model(const std::string& name, Mesh* m)
 {
 	this->name = name;
 	this->meshes.push_back(m);
-	this->textures.push_back(new Texture("assets/textures/brick.png"));
-	this->textures[0]->load();
+	this->diffuseMaps.push_back(new Texture("assets/textures/brick.png"));
+	this->diffuseMaps[0]->load();
+	this->specularMaps.push_back(new Texture("assets/textures/brick.png"));
+	this->specularMaps[0]->load();
 	this->textureIndexes.push_back(0);
 }
 
@@ -39,20 +49,26 @@ Model::~Model()
 		delete meshes[i];
 		meshes[i] = nullptr;
 	}
-	for (size_t i = 0; i < textures.size(); i++)
+	for (size_t i = 0; i < diffuseMaps.size(); i++)
 	{
-		textures[i]->clear();
-		delete textures[i];
-		textures[i] = nullptr;
+		diffuseMaps[i]->clear();
+		delete diffuseMaps[i];
+		diffuseMaps[i] = nullptr;
+	}
+	for (size_t i = 0; i < specularMaps.size(); i++)
+	{
+		specularMaps[i]->clear();
+		delete specularMaps[i];
+		specularMaps[i] = nullptr;
 	}
 	meshes.clear();
-	textures.clear();
+	diffuseMaps.clear();
+	specularMaps.clear();
 	textureIndexes.clear();
 }
 
 void Model::render(Shader* shader)
 {
-	shader->bind();
 	glm::mat4 model(1.0f);
 
 	model = glm::translate(model, position);
@@ -61,17 +77,42 @@ void Model::render(Shader* shader)
 	model = glm::rotate(model, rotation.z * toRadians, glm::vec3(0, 0, 1));
 	model = glm::scale(model, scale);
 
+	shader->getMaterial("material").setUniform<Uniform1f, float>(SHINE_NAME, shine);
+
 	shader->setModel(model);
+
+	shader->bind();
 
 	for (size_t i = 0; i < meshes.size(); i++)
 	{
-		unsigned int index = textureIndexes[i];
-		if (index < textures.size() && textures[index])
-			textures[index]->use();
+		const unsigned int index = textureIndexes[i];
+		if (index < diffuseMaps.size() && index < specularMaps.size() && diffuseMaps[index] && specularMaps[index])
+		{
+			shader->getMaterial("material").setUniform<UniformSampler2D, Texture*>(DIFFUSE_NAME, diffuseMaps[i]);
+			shader->getMaterial("material").setUniform<UniformSampler2D, Texture*>(SPECULAR_NAME, specularMaps[i]);
+		}
 		meshes[i]->render();
 	}
 
 	shader->unBind();
+}
+
+void Model::renderUi()
+{
+	float vec[3] = { position.x, position.y, position.z };
+	ImGui::DragFloat3("Position", vec, 0.01f);
+	setPosition(glm::vec3{ vec[0], vec[1], vec[2] });
+
+	vec[0] = rotation.x; vec[1] = rotation.y; vec[2] = rotation.z;
+	ImGui::DragFloat3("Rotation", vec);
+	setRotation(glm::vec3{ vec[0], vec[1], vec[2] });
+
+	vec[0] = scale.x; vec[1] = scale.y; vec[2] = scale.z;
+	ImGui::DragFloat3("Scale", vec, 0.01f);
+	setScale(glm::vec3{ vec[0], vec[1], vec[2] });
+
+	ImGui::BulletText("Material");
+	ImGui::DragFloat(SHINE_NAME.c_str(), &shine, 0.01f);
 }
 
 void Model::loadNode(aiNode* node, const aiScene* scene)
@@ -123,11 +164,13 @@ void Model::loadMesh(aiMesh* mesh, const aiScene* scene)
 
 void Model::loadTextures(const aiScene* scene)
 {
-	textures.resize(scene->mNumMaterials);
+	diffuseMaps.resize(scene->mNumMaterials);
+	specularMaps.resize(scene->mNumMaterials);
 	for (size_t i = 0; i  < scene->mNumMaterials; i++)
 	{
 		aiMaterial* material = scene->mMaterials[i];
-		textures[i] = nullptr;
+		diffuseMaps[i] = nullptr;
+		specularMaps[i] = nullptr;
 		if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
 		{
 			aiString path;
@@ -138,19 +181,23 @@ void Model::loadTextures(const aiScene* scene)
 
 				std::string texPath = "textures/" + fileName;
 
-				textures[i] = new Texture(texPath);
+				diffuseMaps[i] = new Texture(texPath);
+				specularMaps[i] = new Texture(texPath);
 
-				if (!textures[i]->load())
+				if (!diffuseMaps[i]->load() || !specularMaps[i]->load())
 				{
-					delete textures[i];
-					textures[i] = nullptr;
+					delete diffuseMaps[i];
+					delete specularMaps[i];
+					diffuseMaps[i] = nullptr;
+					specularMaps[i] = nullptr;
 				}
 			}
 		}
 
-		if (!textures[i])
+		if (!diffuseMaps[i] || !specularMaps[i])
 		{
-			textures[i] = new Texture("/assets/textures/missing.png");
+			diffuseMaps[i] = new Texture("/assets/textures/missing.png");
+			specularMaps[i] = new Texture("/assets/textures/missing.png");
 		}
 	}
 }

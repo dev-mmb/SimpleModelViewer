@@ -75,13 +75,3 @@ void Shader::compile()
 {
 	this->shaderProgram->compile();
 }
-
-void Shader::renderMaterialsUi()
-{
-	for (auto m : materials)
-	{
-		ImGui::BulletText(m->getName().c_str());
-		m->renderUi();
-	}
-}
-

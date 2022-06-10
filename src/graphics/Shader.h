@@ -16,7 +16,6 @@ public:
 	void bind();
 	void unBind();
 	void compile();
-	void renderMaterialsUi();
 
 	void setModel(const glm::mat4& m) { model->set(m); }
 

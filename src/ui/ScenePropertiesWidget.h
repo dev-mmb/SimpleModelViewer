@@ -75,33 +75,23 @@ private:
 
 	void propertiesUi(Model* mesh)
 	{
-		if (ImGui::CollapsingHeader("properties"))
+		if (ImGui::CollapsingHeader("Material"))
 		{
-			float vec[3] = { mesh->getPosition().x, mesh->getPosition().y, mesh->getPosition().z };
-			ImGui::DragFloat3("Position", vec, 0.01f);
-			mesh->setPosition(glm::vec3{ vec[0], vec[1], vec[2] });
-
-			vec[0] = mesh->getRotation().x; vec[1] = mesh->getRotation().y; vec[2] = mesh->getRotation().z;
-			ImGui::DragFloat3("Rotation", vec);
-			mesh->setRotation(glm::vec3{ vec[0], vec[1], vec[2] });
-
-			vec[0] = mesh->getScale().x; vec[1] = mesh->getScale().y; vec[2] = mesh->getScale().z;
-			ImGui::DragFloat3("Scale", vec, 0.01f);
-			mesh->setScale(glm::vec3{ vec[0], vec[1], vec[2] });
+			mesh->renderUi();
 		}
 	}
 
 	void materialsUi()
 	{
-		if (ImGui::CollapsingHeader("materials"))
+		if (ImGui::CollapsingHeader("Lights"))
 		{
-			scene->renderMaterialsUi();
+			scene->renderUi();
 		}
 	}
 
 	void shadersUi()
 	{
-		if (ImGui::CollapsingHeader("shaders"))
+		if (ImGui::CollapsingHeader("Shaders"))
 		{
 			if (ImGui::Button("Fragment Shader")) {
 				FileDialog::file_dialog_open = true;

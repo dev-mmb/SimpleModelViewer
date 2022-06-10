@@ -8,7 +8,8 @@ public:
 	virtual ~Light() = default;
 	Light(Shader* shader, const std::string& name);
 
-private:
+	void renderUi();
+protected:
 	std::string name;
 	Shader* shader;
 };

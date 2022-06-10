@@ -243,3 +243,11 @@ void ShaderProgram::setUniform<UniformMat4, glm::mat4>(const std::string& name, 
 	auto castedUniform = dynamic_cast<UniformMat4*>(u);
 	castedUniform->set(value);
 }
+template<>
+void ShaderProgram::setUniform<UniformSampler2D, Texture*>(const std::string& name, Texture* value)
+{
+	auto u = getUniformPointer(name);
+	if (u == nullptr) return;
+	auto castedUniform = dynamic_cast<UniformSampler2D*>(u);
+	castedUniform->set(value);
+}

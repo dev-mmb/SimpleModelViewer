@@ -1,10 +1,15 @@
 #include "Scene.h"
 
+#include "light/DirectionalLight.h"
+#include "light/PointLight.h"
 #include "uniforms/Uniform1f.h"
+
+class UniformSampler2D;
 
 Scene::Scene(const std::string& vshader, const std::string& fshader)
 {
 	createNewShader(vshader, fshader);
+	missingTexture = new Texture("/assets/textures/missing.png");
 }
 
 Scene::~Scene()
@@ -21,8 +26,9 @@ void Scene::createNewShader(const std::string& vshader, const std::string& fshad
 	this->shader = new Shader(vshader, fshader);
 
 	shader->addMaterial("material");
-	shader->getMaterial("material").setUniform<Uniform1f, float>("specular", 5);
-	shader->getMaterial("material").setUniform<Uniform1f, float>("shine", 32);
+	shader->getMaterial("material").setUniform<Uniform1f, float>(Model::SHINE_NAME, 32);
+	shader->getMaterial("material").setUniform<UniformSampler2D, Texture*>(Model::SPECULAR_NAME, missingTexture);
+	shader->getMaterial("material").setUniform<UniformSampler2D, Texture*>(Model::DIFFUSE_NAME, missingTexture);
 
 	directionalLight = new DirectionalLight(shader, "directionalLight");
 
@@ -48,7 +54,11 @@ void Scene::render()
 	}
 }
 
-void Scene::renderMaterialsUi()
+void Scene::renderUi()
 {
-	shader->renderMaterialsUi();
+	for (Light* light : lights)
+	{
+		light->renderUi();
+	}
+	directionalLight->renderUi();
 }
