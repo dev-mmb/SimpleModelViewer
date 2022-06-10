@@ -9,5 +9,6 @@ public:
 	static const std::string DIFFUSE_NAME;
 	static const std::string AMBIENT_NAME;
 	static const std::string DIRECTION_NAME;
+	static const std::string SPECULAR_NAME;
 };
 

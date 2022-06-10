@@ -202,6 +202,7 @@
     <ClInclude Include="src\graphics\light\Light.h" />
     <ClInclude Include="src\graphics\Model.h" />
     <ClInclude Include="src\graphics\uniforms\UniformSampler2D.h" />
+    <ClInclude Include="src\ui\ModelWidget.h" />
     <ClInclude Include="src\ui\ScenePropertiesWidget.h" />
     <ClInclude Include="src\ApplicationController.h" />
     <ClInclude Include="src\control\Camera.h" />

@@ -6,6 +6,8 @@
 #include "../graphics/Scene.h"
 #include <L2DFileDialog/L2DFileDialog.h>
 
+#include "ModelWidget.h"
+
 
 class ScenePropertiesWidget : public Widget
 {
@@ -39,6 +41,7 @@ private:
 	Scene* scene;
 	size_t selectedModel = 0;
 	std::string currentPath = "";
+	ModelWidgetExtension modelWidgetExtension;
 	bool vertexIsOpen = false, fragmentIsOpen = false;
 
 	void modelSelectUi()
@@ -77,7 +80,7 @@ private:
 	{
 		if (ImGui::CollapsingHeader("Material"))
 		{
-			mesh->renderUi();
+			modelWidgetExtension.render(mesh);
 		}
 	}
 
@@ -88,6 +91,7 @@ private:
 			scene->renderUi();
 		}
 	}
+
 
 	void shadersUi()
 	{
@@ -125,7 +129,6 @@ private:
 						vertexIsOpen = false;
 						fragmentIsOpen = false;
 					}
-
 				}
 			}
 		}

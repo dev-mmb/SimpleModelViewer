@@ -6,6 +6,7 @@
 const std::string DirectionalLight::DIFFUSE_NAME = "diffuse";
 const std::string DirectionalLight::AMBIENT_NAME = "ambient";
 const std::string DirectionalLight::DIRECTION_NAME = "direction";
+const std::string DirectionalLight::SPECULAR_NAME = "specular";
 
 DirectionalLight::DirectionalLight(Shader* shader, const std::string& name) : Light(shader, name)
 {
@@ -14,4 +15,5 @@ DirectionalLight::DirectionalLight(Shader* shader, const std::string& name) : Li
 	m.setUniform<Uniform3f, glm::vec3>(DIRECTION_NAME, glm::vec3(2, -1, -2));
 	m.setUniform<Uniform3f, glm::vec3>(DIFFUSE_NAME, glm::vec3(0.4f, 0.3f, 0.0f));
 	m.setUniform<Uniform3f, glm::vec3>(AMBIENT_NAME, glm::vec3(0.4f, 0.3f, 0.0f));
+	m.setUniform<Uniform3f, glm::vec3>(SPECULAR_NAME, glm::vec3(0.1f, 0.1f, 0.1f));
 }

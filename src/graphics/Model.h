@@ -27,6 +27,10 @@ public:
 	void setScale(const glm::vec3& scale) { this->scale = scale; }
 	glm::vec3 getScale() const { return scale; }
 	std::string getname() const { return name; }
+	float getShine() const { return shine; }
+	void setShine(float shine) { this->shine = shine; }
+	std::vector<Texture*> getDiffuseMaps() { return diffuseMaps; }
+	std::vector<Texture*> getSpecularMaps() { return specularMaps; }
 
 	static const std::string AMBIENT_NAME;
 	static const std::string DIFFUSE_NAME;

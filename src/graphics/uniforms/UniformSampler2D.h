@@ -15,7 +15,6 @@ public:
 
 	void bind() override;
 
-	void renderUI() override {}
 private:
 	Texture* texture;
 };

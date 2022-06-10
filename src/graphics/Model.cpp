@@ -7,6 +7,7 @@
 #include <assimp/postprocess.h>
 
 #include "imgui/imgui.h"
+#include "L2DFileDialog/L2DFileDialog.h"
 #include "uniforms/UniformSampler2D.h"
 
 const float toRadians = 3.14159265f / 180.f;
@@ -34,9 +35,9 @@ Model::Model(const std::string& name, Mesh* m)
 {
 	this->name = name;
 	this->meshes.push_back(m);
-	this->diffuseMaps.push_back(new Texture("assets/textures/brick.png"));
+	this->diffuseMaps.push_back(new Texture("assets/textures/brick - Copy.png"));
 	this->diffuseMaps[0]->load();
-	this->specularMaps.push_back(new Texture("assets/textures/brick.png"));
+	this->specularMaps.push_back(new Texture("assets/textures/brick_specular.png"));
 	this->specularMaps[0]->load();
 	this->textureIndexes.push_back(0);
 }
@@ -89,7 +90,10 @@ void Model::render(Shader* shader)
 		if (index < diffuseMaps.size() && index < specularMaps.size() && diffuseMaps[index] && specularMaps[index])
 		{
 			shader->getMaterial("material").setUniform<UniformSampler2D, Texture*>(DIFFUSE_NAME, diffuseMaps[i]);
+			// increment the texture unit so it is bound correctly
+			Texture::incrementTextureIndex();
 			shader->getMaterial("material").setUniform<UniformSampler2D, Texture*>(SPECULAR_NAME, specularMaps[i]);
+			Texture::resetTextureIndex();
 		}
 		meshes[i]->render();
 	}
@@ -99,20 +103,7 @@ void Model::render(Shader* shader)
 
 void Model::renderUi()
 {
-	float vec[3] = { position.x, position.y, position.z };
-	ImGui::DragFloat3("Position", vec, 0.01f);
-	setPosition(glm::vec3{ vec[0], vec[1], vec[2] });
-
-	vec[0] = rotation.x; vec[1] = rotation.y; vec[2] = rotation.z;
-	ImGui::DragFloat3("Rotation", vec);
-	setRotation(glm::vec3{ vec[0], vec[1], vec[2] });
-
-	vec[0] = scale.x; vec[1] = scale.y; vec[2] = scale.z;
-	ImGui::DragFloat3("Scale", vec, 0.01f);
-	setScale(glm::vec3{ vec[0], vec[1], vec[2] });
-
-	ImGui::BulletText("Material");
-	ImGui::DragFloat(SHINE_NAME.c_str(), &shine, 0.01f);
+	
 }
 
 void Model::loadNode(aiNode* node, const aiScene* scene)

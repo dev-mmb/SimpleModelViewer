@@ -5,10 +5,35 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include "stb_image.h"
+int Texture::currentHighestTextureIndex = 0;
+const std::vector<GLenum> Texture::textureIndexes = std::vector<GLenum>{
+	GL_TEXTURE0,
+	GL_TEXTURE1,
+	GL_TEXTURE2,
+	GL_TEXTURE3,
+	GL_TEXTURE4,
+	GL_TEXTURE5,
+	GL_TEXTURE6,
+	GL_TEXTURE7,
+	GL_TEXTURE8,
+	GL_TEXTURE9,
+	GL_TEXTURE10,
+	GL_TEXTURE11,
+};
 
 Texture::Texture(std::string fileLoc)
 	: id(0), width(0), height(0), bitDepth(0), fileLocation(std::move(fileLoc))
 {
+}
+
+void Texture::create(std::string fileLoc)
+{
+	if (id != 0) clear();
+	fileLocation = std::move(fileLoc);
+	id = 0;
+	width = 0;
+	height = 0;
+	bitDepth = 0;
 }
 
 bool Texture::load()
@@ -38,7 +63,7 @@ bool Texture::load()
 
 void Texture::use()
 {
-	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(textureIndexes[currentHighestTextureIndex]);
 	glBindTexture(GL_TEXTURE_2D, id);
 }
 

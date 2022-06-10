@@ -31,7 +31,6 @@ struct Material {
 	float shine;
 };
 
-uniform sampler2D tex;
 uniform DirLight directionalLight;
 uniform Material material;
 uniform vec3 viewPosition;
