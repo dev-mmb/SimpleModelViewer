@@ -50,7 +50,7 @@ private:
 		for (size_t i = 0; i < scene->getModels().size(); i++)
 		{
 			Model* m = scene->getModels()[i];
-			if (ImGui::RadioButton(m->getname().c_str(), i == selectedModel))
+			if (ImGui::RadioButton(m->getName().c_str(), i == selectedModel))
 			{
 				selectedModel = i;
 			}

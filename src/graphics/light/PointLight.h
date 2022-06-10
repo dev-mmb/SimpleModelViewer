@@ -4,10 +4,11 @@
 #include "Light.h"
 
 
-class PointLight : public Light
+class PointLight final : public Light
 {
 public:
 	PointLight(Shader* shader, const std::string& name);
+	~PointLight();
 
 	static const std::string POSITION;
 	static const std::string CONSTANT;
@@ -19,5 +20,8 @@ public:
 	static const std::string SPECULAR;
 
 	static constexpr int MAX_POINT_LIGHTS = 1;
+
+	void renderModel(Shader* shader) override;
+
 };
 

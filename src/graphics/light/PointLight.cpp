@@ -1,5 +1,5 @@
 #include "PointLight.h"
-#include <imgui/imgui.h>
+#include "../BasicModels.h"
 
 class Uniform1f;
 const std::string PointLight::POSITION = "pos";
@@ -14,8 +14,11 @@ const std::string PointLight::SPECULAR = "specular";
 
 constexpr int PointLight::MAX_POINT_LIGHTS;
 
-PointLight::PointLight(Shader* shader, const std::string& name) : Light(shader, name)
+PointLight::PointLight(Shader* shader, const std::string& name)
+: Light(shader, name, BasicModels::basicCube("assets/textures/light.png", 0))
 {
+	model->setScale(glm::vec3(0.02f));
+
 	shader->addMaterial(name);
 	Material& m = shader->getMaterial(name);
 	m.setUniform<Uniform3f, glm::vec3>(POSITION, glm::vec3(0, 0, 0));
@@ -27,7 +30,20 @@ PointLight::PointLight(Shader* shader, const std::string& name) : Light(shader, 
 	m.setUniform<Uniform3f, glm::vec3>(AMBIENT, glm::vec3(1, 0.5, 0));
 	m.setUniform<Uniform3f, glm::vec3>(DIFFUSE, glm::vec3(1, 0.5, 0));
 	m.setUniform<Uniform3f, glm::vec3>(SPECULAR, glm::vec3(1, 0.5, 0));
+}
 
+PointLight::~PointLight()
+{
+	delete model;
+}
+
+void PointLight::renderModel(Shader* shader)
+{
+	Material& m = shader->getMaterial(name);
+	Uniform* u = m.getUniform(name + "." + POSITION);
+	Uniform3f* u3f = dynamic_cast<Uniform3f*>(u);
+	model->setPosition(u3f->get());
+	model->render(shader);
 }
 
 

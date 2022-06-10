@@ -31,13 +31,13 @@ Model::Model(const std::string& name, const std::string& modelFileName)
 	loadTextures(scene);
 }
 
-Model::Model(const std::string& name, Mesh* m)
+Model::Model(const std::string& name, Mesh* m, const std::string& texturePath)
 {
 	this->name = name;
 	this->meshes.push_back(m);
-	this->diffuseMaps.push_back(new Texture("assets/textures/brick - Copy.png"));
+	this->diffuseMaps.push_back(new Texture(texturePath));
 	this->diffuseMaps[0]->load();
-	this->specularMaps.push_back(new Texture("assets/textures/brick_specular.png"));
+	this->specularMaps.push_back(new Texture(texturePath));
 	this->specularMaps[0]->load();
 	this->textureIndexes.push_back(0);
 }
@@ -99,11 +99,6 @@ void Model::render(Shader* shader)
 	}
 
 	shader->unBind();
-}
-
-void Model::renderUi()
-{
-	
 }
 
 void Model::loadNode(aiNode* node, const aiScene* scene)

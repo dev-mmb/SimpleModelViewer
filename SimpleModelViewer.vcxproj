@@ -163,6 +163,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\graphics\BasicModels.cpp" />
     <ClCompile Include="src\graphics\Scene.cpp" />
     <ClCompile Include="src\graphics\light\PointLight.cpp" />
     <ClCompile Include="src\graphics\light\DirectionalLight.cpp" />
@@ -196,6 +197,7 @@
     <ClCompile Include="src\vendor\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\graphics\BasicModels.h" />
     <ClInclude Include="src\graphics\Scene.h" />
     <ClInclude Include="src\graphics\light\PointLight.h" />
     <ClInclude Include="src\graphics\light\DirectionalLight.h" />

@@ -13,7 +13,7 @@ class Model
 {
 public:
 	Model(const std::string& name, const std::string& modelFileName);
-	Model(const std::string& name, Mesh* m);
+	Model(const std::string& name, Mesh* m, const std::string& texturePath);
 	~Model();
 	void render(Shader* shader);
 	void renderUi();
@@ -26,7 +26,7 @@ public:
 	glm::vec3 getRotation() const { return rotation; }
 	void setScale(const glm::vec3& scale) { this->scale = scale; }
 	glm::vec3 getScale() const { return scale; }
-	std::string getname() const { return name; }
+	std::string getName() const { return name; }
 	float getShine() const { return shine; }
 	void setShine(float shine) { this->shine = shine; }
 	std::vector<Texture*> getDiffuseMaps() { return diffuseMaps; }
@@ -36,7 +36,6 @@ public:
 	static const std::string DIFFUSE_NAME;
 	static const std::string SPECULAR_NAME;
 	static const std::string SHINE_NAME;
-
 
 private:
 	std::string name;

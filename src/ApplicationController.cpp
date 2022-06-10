@@ -8,7 +8,9 @@ ApplicationController::ApplicationController()
 {
 
 	scene = new Scene(vertexShaderSource, fragmentShaderSource);
-	scene->addModel(new Model("3D triangle", createTriangle()[0]));
+	scene->addModel(BasicModels::basicCube("assets/textures/brick.png", 0));
+	scene->addModel(BasicModels::basicCube("assets/textures/brick.png", 1));
+	scene->addModel(BasicModels::basicCube("assets/textures/brick.png", 2));
 	//scene->addModel(new Model("3D triangle1", createTriangle()[0]));
 	//scene->addModel(new Model("3D triangle2", createTriangle()[0]));
 

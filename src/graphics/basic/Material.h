@@ -19,6 +19,10 @@ public:
 	{
 		shader->setUniform<UNIFORM_TYPE, VALUE_TYPE>(this->name + "." + name, value);
 	}
+	Uniform* getUniform(const std::string& name)
+	{
+		return &shader->getUniform(name);
+	}
 
 	void renderUi();
 

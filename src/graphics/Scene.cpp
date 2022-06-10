@@ -52,6 +52,10 @@ void Scene::render()
 	{
 		model->render(shader);
 	}
+	for (auto* light : lights)
+	{
+		light->renderModel(shader);
+	}
 }
 
 void Scene::renderUi()

@@ -12,6 +12,7 @@ public:
 	{}
 
 	void set(const glm::vec3 vec);
+	glm::vec3 get() const { return value; }
 	void renderUI() override;
 
 	void bind() override;

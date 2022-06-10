@@ -8,7 +8,7 @@ const std::string DirectionalLight::AMBIENT_NAME = "ambient";
 const std::string DirectionalLight::DIRECTION_NAME = "direction";
 const std::string DirectionalLight::SPECULAR_NAME = "specular";
 
-DirectionalLight::DirectionalLight(Shader* shader, const std::string& name) : Light(shader, name)
+DirectionalLight::DirectionalLight(Shader* shader, const std::string& name) : Light(shader, name, nullptr)
 {
 	shader->addMaterial(name);
 	Material& m = shader->getMaterial(name);
