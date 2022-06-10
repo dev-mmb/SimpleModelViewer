@@ -81,5 +81,5 @@ void Camera::setFocus(const glm::vec3& f)
 
 void Camera::calculateViewMatrix()
 {
-	viewMatrix = glm::lookAt(pos, focus, worldUp);
+	viewMatrix = glm::lookAt(pos * zoom, focus, worldUp);
 }

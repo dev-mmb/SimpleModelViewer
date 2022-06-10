@@ -76,10 +76,12 @@ void Editor::createInput()
 		});
 	window->subscribe(Input::Action::MOUSE_WHEEL_UP, [this](const Window& w, int action, int mods, float dt)
 		{
-			this->window->setFov(this->window->getFov() - 1);
+			//this->window->setFov(this->window->getFov() - 1);
+			this->camera->zoomOut();
 		});
 	window->subscribe(Input::Action::MOUSE_WHEEL_DOWN, [this](const Window& w, int action, int mods, float dt)
 		{
-			this->window->setFov(this->window->getFov() + 1);
+			//this->window->setFov(this->window->getFov() + 1);
+			this->camera->zoomIn();
 		});
 }

@@ -31,11 +31,15 @@ public:
 	glm::vec3 getFocus() const { return this->focus; }
 	void setFocus(const glm::vec3& f);
 
+	void zoomIn() { this->zoom += 0.01f; calculateViewMatrix(); }
+	void zoomOut() { this->zoom -= 0.01f; calculateViewMatrix();  }
+
 private:
 	glm::vec3 pos;
 	glm::vec3 right;
 	glm::vec3 front;
 	glm::vec3 worldUp;
+	float zoom = 1;
 	glm::vec3 focus = glm::vec3(0, 0, 0);
 	glm::mat4 viewMatrix;
 	int viewPortW, viewPortH;
