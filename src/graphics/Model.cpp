@@ -46,22 +46,21 @@ Model::Model(const std::string& name, Mesh* m, const std::string& texturePath)
 
 Model::~Model()
 {
-	for (size_t i = 0; i < meshes.size(); i++)
+	for (auto& mesh : meshes)
 	{
-		meshes[i].first->clear();
-		delete meshes[i].first;
-		meshes[i].first = nullptr;
+		delete mesh.first;
+		mesh.first = nullptr;
 
-		for (size_t j = 0; j < meshes[i].second.size(); j++)
+		for (auto& j : mesh.second)
 		{
-			meshes[i].second[j]->clear();
-			delete meshes[i].second[j];
-			meshes[i].second[j] = nullptr;
+			j->clear();
+			delete j;
+			j = nullptr;
 		}
-		meshes[i].second.clear();
+		mesh.second.clear();
 	}
-
 	meshes.clear();
+	allTextures.clear();
 }
 
 void Model::render(Shader* shader)

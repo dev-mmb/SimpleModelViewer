@@ -37,8 +37,8 @@ public:
 			if (ImGui::Button(getButtonName(model->getTextures()[i], model->getTextures()[i]->getType(), i).c_str()))
 			{
 				FileDialog::file_dialog_open = true;
-					FileDialog::file_dialog_open_type = FileDialog::FileDialogType::OpenFile;
-					openTexture = model->getTextures()[i];
+				FileDialog::file_dialog_open_type = FileDialog::FileDialogType::OpenFile;
+				openTexture = model->getTextures()[i];
 			}
 		}
 

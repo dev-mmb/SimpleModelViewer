@@ -24,6 +24,7 @@ const std::vector<GLenum> Texture::textureIndexes = std::vector<GLenum>{
 Texture::Texture(std::string fileLoc, std::string type)
 	: id(0), width(0), height(0), bitDepth(0), fileLocation(std::move(fileLoc)), type(std::move(type))
 {
+
 }
 
 void Texture::create(std::string fileLoc)

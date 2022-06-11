@@ -14,6 +14,13 @@ public:
 
 	void addModel(Model* model);
 	std::vector<Model*> getModels() { return this->models; }
+	void deleteModel(size_t index);
+	int getIndexOfFirstNonNullModel() const
+	{
+		for (int i = 0; i < models.size(); i++)
+			if (models[i] != nullptr) return i;
+		return -1;
+	}
 	void render();
 
 	void renderLightsUi();
@@ -22,6 +29,7 @@ public:
 	std::string getFragmentShaderSource() const { return shader->getFShader(); }
 	std::string getVertexShaderSource() const { return shader->getVShader(); }
 	Shader* getShader() { return shader; }
+	bool doesModelNameExist(std::string& name);
 
 private:
 	Shader* shader;

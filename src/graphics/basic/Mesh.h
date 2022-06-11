@@ -10,7 +10,6 @@ public:
 
 	void create(GLfloat* vertices, unsigned int* indices, unsigned int vCount, unsigned int iCount);
 	void render() const;
-	void clear();
 private:
 	GLuint VAO, VBO, IBO;
 	GLsizei indexCount;

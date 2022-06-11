@@ -15,6 +15,7 @@ Scene::Scene(const std::string& vshader, const std::string& fshader)
 Scene::~Scene()
 {
 	delete shader;
+	delete missingTexture;
 }
 
 void Scene::createNewShader(const std::string& vshader, const std::string& fshader)
@@ -43,14 +44,30 @@ void Scene::createNewShader(const std::string& vshader, const std::string& fshad
 
 void Scene::addModel(Model* model)
 {
+	for (size_t i = 0; i < models.size(); i++)
+	{
+		if (models[i] == nullptr)
+		{
+			models[i] = model;
+			return;
+		}
+
+	}
 	this->models.push_back(model);
+}
+
+void Scene::deleteModel(size_t index)
+{
+	delete models[index];
+	models[index] = nullptr;
 }
 
 void Scene::render()
 {
 	for (auto* model : models)
 	{
-		model->render(shader);
+		if (model != nullptr)
+			model->render(shader);
 	}
 	for (auto* light : lights)
 	{
@@ -70,4 +87,14 @@ void Scene::renderLightsUi()
 void Scene::renderMaterialsUi()
 {
 	shader->renderMaterialsUi();
+}
+
+bool Scene::doesModelNameExist(std::string& name)
+{
+	for (Model* m : models)
+	{
+		if (m != nullptr && m->getName() == name)
+			return true;
+	}
+	return false;
 }

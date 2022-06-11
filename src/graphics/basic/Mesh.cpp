@@ -6,7 +6,25 @@ Mesh::Mesh()
 
 Mesh::~Mesh()
 {
-	clear();
+	if (IBO != 0)
+	{
+		glDeleteBuffers(1, &IBO);
+		IBO = 0;
+	}
+
+	if (VBO != 0)
+	{
+		glDeleteBuffers(1, &VBO);
+		VBO = 0;
+	}
+
+	if (VAO != 0)
+	{
+		glDeleteVertexArrays(1, &VAO);
+		VAO = 0;
+	}
+
+	indexCount = 0;
 }
 
 void Mesh::create(GLfloat* vertices, unsigned int* indices, unsigned int vCount, unsigned int iCount)
@@ -52,27 +70,4 @@ void Mesh::render() const
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-}
-
-void Mesh::clear()
-{
-	if (IBO != 0)
-	{
-		glDeleteBuffers(1, &IBO);
-		IBO = 0;
-	}
-
-	if (VBO != 0)
-	{
-		glDeleteBuffers(1, &VBO);
-		VBO = 0;
-	}
-
-	if (VAO != 0)
-	{
-		glDeleteVertexArrays(1, &VAO);
-		VAO = 0;
-	}
-
-	indexCount = 0;
 }

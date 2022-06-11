@@ -17,9 +17,6 @@ public:
 	Model(const std::string& name, Mesh* m, const std::string& texturePath);
 	~Model();
 	void render(Shader* shader);
-	void renderUi();
-
-	void addMesh(Mesh* mesh);
 
 	void setPosition(const glm::vec3& position){ this->position = position; }
 	glm::vec3 getPosition() const { return position; }
@@ -56,7 +53,11 @@ private:
 	{
 		size_t slashPos = filePath.find_last_of('/');
 		if (slashPos == std::string::npos)
-			return filePath;
+		{
+			slashPos = filePath.find_last_of('\\');
+			if (slashPos == std::string::npos)
+				return filePath;
+		}
 		return filePath.substr(0, slashPos + 1);
 	}
 
