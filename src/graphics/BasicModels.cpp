@@ -62,7 +62,7 @@ Model* BasicModels::basicCube(const std::string& texturePath, int num)
 	};
 	Mesh* m = new Mesh();
 	m->create(vertices, indices, 64, 36);
-	return new Model("light" + texturePath + std::to_string(num), m, texturePath);
+	return new Model("cube " + texturePath + std::to_string(num), m, texturePath);
 }
 
 Model* BasicModels::basicTriangle()
@@ -83,5 +83,5 @@ Model* BasicModels::basicTriangle()
 	BasicModels::calculateAverageNormals(indices, 12, vertices, 32, 8, 5);
 	Mesh* m = new Mesh();
 	m->create(vertices, indices, 32, 12);
-	return new Model("triangle", m, "assets/textures/brick.png");
+	return new Model("triangle ", m, "assets/textures/brick.png");
 }

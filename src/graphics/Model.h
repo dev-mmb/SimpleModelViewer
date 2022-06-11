@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <utility>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -29,9 +30,7 @@ public:
 	std::string getName() const { return name; }
 	float getShine() const { return shine; }
 	void setShine(float shine) { this->shine = shine; }
-	std::vector<Texture*> getDiffuseMaps() { return diffuseMaps; }
-	std::vector<Texture*> getSpecularMaps() { return specularMaps; }
-
+	std::vector<Texture*> getTextures() { return allTextures; }
 	static const std::string AMBIENT_NAME;
 	static const std::string DIFFUSE_NAME;
 	static const std::string SPECULAR_NAME;
@@ -39,10 +38,9 @@ public:
 
 private:
 	std::string name;
-	std::vector<Mesh*> meshes;
-	std::vector<Texture*> diffuseMaps;
-	std::vector<Texture*> specularMaps;
-	std::vector<unsigned int> textureIndexes;
+	std::string filePath;
+	std::vector<std::pair<Mesh*, std::vector<Texture*>>> meshes;
+	std::vector<Texture*> allTextures;
 	Assimp::Importer importer;
 
 	glm::vec3 position{ 0.0f, 0.0f, 0.0f };
@@ -53,6 +51,15 @@ private:
 
 	void loadNode(aiNode* node, const aiScene* scene);
 	void loadMesh(aiMesh* mesh, const aiScene* scene);
-	void loadTextures(const aiScene* scene);
+
+	std::string getFilePathWithoutFileName()
+	{
+		size_t slashPos = filePath.find_last_of('/');
+		if (slashPos == std::string::npos)
+			return filePath;
+		return filePath.substr(0, slashPos + 1);
+	}
+
+	std::vector<Texture*> loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
 };
 

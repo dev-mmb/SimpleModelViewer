@@ -21,8 +21,8 @@ const std::vector<GLenum> Texture::textureIndexes = std::vector<GLenum>{
 	GL_TEXTURE11,
 };
 
-Texture::Texture(std::string fileLoc)
-	: id(0), width(0), height(0), bitDepth(0), fileLocation(std::move(fileLoc))
+Texture::Texture(std::string fileLoc, std::string type)
+	: id(0), width(0), height(0), bitDepth(0), fileLocation(std::move(fileLoc)), type(std::move(type))
 {
 }
 
@@ -44,6 +44,8 @@ bool Texture::load()
 		std::cout << "failed to find texture location: " << fileLocation << "\n";
 		return false;
 	}
+	if (bitDepth == 3) setTextureColorFormat(GL_RGB);
+	else if (bitDepth == 4) setTextureColorFormat(GL_RGBA);
 
 	glGenTextures(1, &id);
 	glBindTexture(GL_TEXTURE_2D, id);
