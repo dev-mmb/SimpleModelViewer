@@ -18,7 +18,7 @@ const std::string Model::SHINE_NAME = "shine";
 
 Model::Model(const std::string& name, const std::string& modelFileName)
 {
-	this->name = name;
+	this->name = name; this->filePath = modelFileName;
 	const aiScene* scene = importer.ReadFile(modelFileName.c_str(), 
 		aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
 	if (!scene)
@@ -28,44 +28,40 @@ Model::Model(const std::string& name, const std::string& modelFileName)
 	}
 
 	loadNode(scene->mRootNode, scene);
-	loadTextures(scene);
 }
 
 Model::Model(const std::string& name, Mesh* m, const std::string& texturePath)
 {
 	this->name = name;
-	this->meshes.push_back(m);
-	this->diffuseMaps.push_back(new Texture(texturePath));
-	this->diffuseMaps[0]->load();
-	this->specularMaps.push_back(new Texture(texturePath));
-	this->specularMaps[0]->load();
-	this->textureIndexes.push_back(0);
+	auto pair = std::make_pair(m, std::vector<Texture*>());
+	auto tex = new Texture(texturePath, Model::DIFFUSE_NAME);
+	tex->load();
+	pair.second.push_back(tex);
+	tex = new Texture(texturePath, Model::SPECULAR_NAME);
+	tex->load();
+	pair.second.push_back(tex);
+	this->meshes.push_back(pair);
+	this->allTextures.insert(allTextures.end(), pair.second.begin(), pair.second.end());
 }
 
 Model::~Model()
 {
 	for (size_t i = 0; i < meshes.size(); i++)
 	{
-		meshes[i]->clear();
-		delete meshes[i];
-		meshes[i] = nullptr;
+		meshes[i].first->clear();
+		delete meshes[i].first;
+		meshes[i].first = nullptr;
+
+		for (size_t j = 0; j < meshes[i].second.size(); j++)
+		{
+			meshes[i].second[j]->clear();
+			delete meshes[i].second[j];
+			meshes[i].second[j] = nullptr;
+		}
+		meshes[i].second.clear();
 	}
-	for (size_t i = 0; i < diffuseMaps.size(); i++)
-	{
-		diffuseMaps[i]->clear();
-		delete diffuseMaps[i];
-		diffuseMaps[i] = nullptr;
-	}
-	for (size_t i = 0; i < specularMaps.size(); i++)
-	{
-		specularMaps[i]->clear();
-		delete specularMaps[i];
-		specularMaps[i] = nullptr;
-	}
+
 	meshes.clear();
-	diffuseMaps.clear();
-	specularMaps.clear();
-	textureIndexes.clear();
 }
 
 void Model::render(Shader* shader)
@@ -86,16 +82,15 @@ void Model::render(Shader* shader)
 
 	for (size_t i = 0; i < meshes.size(); i++)
 	{
-		const unsigned int index = textureIndexes[i];
-		if (index < diffuseMaps.size() && index < specularMaps.size() && diffuseMaps[index] && specularMaps[index])
+		std::vector<Texture*>& textures = meshes[i].second;
+		for (Texture* t : textures)
 		{
-			shader->getMaterial("material").setUniform<UniformSampler2D, Texture*>(DIFFUSE_NAME, diffuseMaps[i]);
+			shader->getMaterial("material").setUniform<UniformSampler2D, Texture*>(t->getType(), t);
 			// increment the texture unit so it is bound correctly
 			Texture::incrementTextureIndex();
-			shader->getMaterial("material").setUniform<UniformSampler2D, Texture*>(SPECULAR_NAME, specularMaps[i]);
-			Texture::resetTextureIndex();
 		}
-		meshes[i]->render();
+		meshes[i].first->render();
+		Texture::resetTextureIndex();
 	}
 
 	shader->unBind();
@@ -124,13 +119,13 @@ void Model::loadMesh(aiMesh* mesh, const aiScene* scene)
 		vertices.insert(vertices.end(), { mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z });
 		if (mesh->mTextureCoords[0])
 		{
-			vertices.insert(vertices.end(), { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y, mesh->mTextureCoords[0][i].z });
+			vertices.insert(vertices.end(), { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y});
 		}
 		else
 		{
-			vertices.insert(vertices.end(), { 0, 0, 0 });
+			vertices.insert(vertices.end(), { 0, 0 });
 		}
-		vertices.insert(vertices.end(), { -mesh->mNormals[i].x, -mesh->mNormals[i].y, -mesh->mNormals[i].z });
+		vertices.insert(vertices.end(), { mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z });
 	}
 
 	for (size_t i = 0; i < mesh->mNumFaces; i++)
@@ -144,46 +139,40 @@ void Model::loadMesh(aiMesh* mesh, const aiScene* scene)
 
 	auto m = new Mesh();
 	m->create(&vertices[0], &indices[0], vertices.size(), indices.size());
-	this->meshes.push_back(m);
-	textureIndexes.push_back(mesh->mMaterialIndex);
+	auto vector = std::vector<Texture*>();
+
+	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+	vector = loadMaterialTextures(material, aiTextureType_DIFFUSE, Model::DIFFUSE_NAME);
+	std::vector<Texture*> textures = loadMaterialTextures(material, aiTextureType_SPECULAR, Model::SPECULAR_NAME);
+	vector.insert(vector.end(), textures.begin(), textures.end());
+	// save the textures for the ui
+	allTextures.insert(allTextures.end(), vector.begin(), vector.end());
+
+	auto pair = std::make_pair(m, vector);
+	this->meshes.push_back(pair);
 }
 
-void Model::loadTextures(const aiScene* scene)
+
+std::vector<Texture*> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName)
 {
-	diffuseMaps.resize(scene->mNumMaterials);
-	specularMaps.resize(scene->mNumMaterials);
-	for (size_t i = 0; i  < scene->mNumMaterials; i++)
+	std::vector<Texture*> textures;
+	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
 	{
-		aiMaterial* material = scene->mMaterials[i];
-		diffuseMaps[i] = nullptr;
-		specularMaps[i] = nullptr;
-		if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
+		aiString str;
+		mat->GetTexture(type, i, &str);
+		const size_t idx = std::string(str.data).rfind('\\');
+		std::string fileName = std::string(str.data).substr(idx + 1);
+
+		std::string texPath = getFilePathWithoutFileName() + fileName;
+
+		auto texture = new Texture(texPath, typeName);
+		if (!texture->load())
 		{
-			aiString path;
-			if(material->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS)
-			{
-				const size_t idx = std::string(path.data).rfind('\\');
-				std::string fileName = std::string(path.data).substr(idx + 1);
-
-				std::string texPath = "textures/" + fileName;
-
-				diffuseMaps[i] = new Texture(texPath);
-				specularMaps[i] = new Texture(texPath);
-
-				if (!diffuseMaps[i]->load() || !specularMaps[i]->load())
-				{
-					delete diffuseMaps[i];
-					delete specularMaps[i];
-					diffuseMaps[i] = nullptr;
-					specularMaps[i] = nullptr;
-				}
-			}
+			std::cout << "could not load texture: " << texPath << "\n";
+			delete texture;
+			texture = new Texture("/assets/textures/missing.png", typeName);
 		}
-
-		if (!diffuseMaps[i] || !specularMaps[i])
-		{
-			diffuseMaps[i] = new Texture("/assets/textures/missing.png");
-			specularMaps[i] = new Texture("/assets/textures/missing.png");
-		}
+		textures.push_back(texture);
 	}
+	return textures;
 }

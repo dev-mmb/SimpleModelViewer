@@ -9,7 +9,7 @@ class UniformSampler2D;
 Scene::Scene(const std::string& vshader, const std::string& fshader)
 {
 	createNewShader(vshader, fshader);
-	missingTexture = new Texture("/assets/textures/missing.png");
+	missingTexture = new Texture("/assets/textures/missing.png", Model::DIFFUSE_NAME);
 }
 
 Scene::~Scene()

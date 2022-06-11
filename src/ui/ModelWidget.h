@@ -32,19 +32,13 @@ public:
 
 
 		ImGui::BulletText("Textures");
-		for (size_t i = 0; i < model->getDiffuseMaps().size(); i++)
+		for (size_t i = 0; i < model->getTextures().size(); i++)
 		{
-			if (ImGui::Button(getButtonName(model->getDiffuseMaps()[i], "diffuse map", i).c_str()))
+			if (ImGui::Button(getButtonName(model->getTextures()[i], model->getTextures()[i]->getType(), i).c_str()))
 			{
 				FileDialog::file_dialog_open = true;
 					FileDialog::file_dialog_open_type = FileDialog::FileDialogType::OpenFile;
-					openTexture = model->getDiffuseMaps()[i];
-			}
-			if (ImGui::Button(getButtonName(model->getSpecularMaps()[i], "specular map", i).c_str()))
-			{
-				FileDialog::file_dialog_open = true;
-					FileDialog::file_dialog_open_type = FileDialog::FileDialogType::OpenFile;
-					openTexture = model->getSpecularMaps()[i];
+					openTexture = model->getTextures()[i];
 			}
 		}
 
