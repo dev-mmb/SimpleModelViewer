@@ -4,31 +4,10 @@
 #include <math.h>
 
 Camera::Camera(glm::vec3 initialPos, glm::vec3 up,  GLfloat movementSpeed, int viewPortWidht, int viewPortHeight)
-	: pos(initialPos), worldUp(up), movementSpeed(movementSpeed), turnSpeed(0.5)
+	: pos(initialPos), worldUp(up)
 {
 	viewPortW = viewPortWidht; viewPortH = viewPortHeight;
-	front = glm::vec3(0, 0, -1);
 	rotate(0, 0);
-}
-
-void Camera::moveForward(float dt)
-{
-	pos += front * (movementSpeed * dt);
-}
-
-void Camera::moveBackwards(float dt)
-{
-	pos -= front * (movementSpeed * dt);
-}
-
-void Camera::moveLeft(float dt)
-{
-	pos -= right * (movementSpeed * dt);
-}
-
-void Camera::moveRight(float dt)
-{
-	pos += right * (movementSpeed * dt);
 }
 
 
@@ -59,6 +38,12 @@ void Camera::rotate(float xChange, float yChange)
 	rotationMatrixY = glm::rotate(rotationMatrixY, yAngle, getRightVector());
 	pos = (rotationMatrixY * (position - pivot)) + pivot;
 
+	calculateViewMatrix();
+}
+
+void Camera::move(float xChange, float yChange)
+{
+	//this->focus += glm::vec3(xChange/ 2, yChange / 2, 0);
 	calculateViewMatrix();
 }
 

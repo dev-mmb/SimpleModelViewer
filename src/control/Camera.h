@@ -10,11 +10,8 @@ class Camera
 public:
 	Camera(glm::vec3 initialPos, glm::vec3 up, GLfloat movementSpeed, int viewPortWidht, int viewPortHeight);
 
-	void moveForward(float dt);
-	void moveBackwards(float dt);
-	void moveLeft(float dt);
-	void moveRight(float dt);
 	void rotate(float xChange, float yChange);
+	void move(float xChange, float yChange);
 
 	glm::vec3 getPos() const { return pos; }
 	void setPos(const glm::vec3& p);
@@ -36,16 +33,12 @@ public:
 
 private:
 	glm::vec3 pos;
-	glm::vec3 right;
-	glm::vec3 front;
 	glm::vec3 worldUp;
 	float zoom = 1;
 	glm::vec3 focus = glm::vec3(0, 0, 0);
 	glm::mat4 viewMatrix;
 	int viewPortW, viewPortH;
 
-	GLfloat movementSpeed;
-	GLfloat turnSpeed;
 	template <typename T> int sgn(T val) {
 		return (T(0) < val) - (val < T(0));
 	}

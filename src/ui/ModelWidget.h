@@ -30,6 +30,7 @@ public:
 		ImGui::DragFloat(Model::SHINE_NAME.c_str(), &shine, 0.01f);
 		model->setShine(shine);
 
+
 		ImGui::BulletText("Textures");
 		for (size_t i = 0; i < model->getDiffuseMaps().size(); i++)
 		{

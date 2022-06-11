@@ -30,7 +30,7 @@ public:
 		if (ImGui::BeginTabItem("Shader"))
 		{
 			shadersUi();
-			materialsUi();
+			sceneUi();
 			ImGui::EndTabItem();
 		}
 		ImGui::EndTabBar();
@@ -84,11 +84,15 @@ private:
 		}
 	}
 
-	void materialsUi()
+	void sceneUi()
 	{
 		if (ImGui::CollapsingHeader("Lights"))
 		{
-			scene->renderUi();
+			scene->renderLightsUi();
+		}
+		if (ImGui::CollapsingHeader("Materials"))
+		{
+			scene->renderMaterialsUi();
 		}
 	}
 

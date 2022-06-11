@@ -58,11 +58,16 @@ void Scene::render()
 	}
 }
 
-void Scene::renderUi()
+void Scene::renderLightsUi()
 {
 	for (Light* light : lights)
 	{
 		light->renderUi();
 	}
 	directionalLight->renderUi();
+}
+
+void Scene::renderMaterialsUi()
+{
+	shader->renderMaterialsUi();
 }

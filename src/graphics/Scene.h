@@ -15,10 +15,13 @@ public:
 	void addModel(Model* model);
 	std::vector<Model*> getModels() { return this->models; }
 	void render();
-	void renderUi();
+
+	void renderLightsUi();
+	void renderMaterialsUi();
 
 	std::string getFragmentShaderSource() const { return shader->getFShader(); }
 	std::string getVertexShaderSource() const { return shader->getVShader(); }
+	Shader* getShader() { return shader; }
 
 private:
 	Shader* shader;

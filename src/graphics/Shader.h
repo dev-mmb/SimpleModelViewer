@@ -16,6 +16,7 @@ public:
 	void bind();
 	void unBind();
 	void compile();
+	void renderMaterialsUi();
 
 	void setModel(const glm::mat4& m) { model->set(m); }
 
@@ -25,6 +26,9 @@ private:
 	std::string vShader, fShader;
 	ShaderProgram* shaderProgram;
 	std::vector<Material*> materials;
+	std::vector<Material*> materialsToRenderUi;
 	UniformMat4* model, *projection, *view;
 	Uniform3f* viewPosition;
+
+	void createMaterialNamesUi();
 };

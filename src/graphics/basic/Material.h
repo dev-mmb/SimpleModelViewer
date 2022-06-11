@@ -26,6 +26,8 @@ public:
 
 	void renderUi();
 
+	static const std::vector<std::string> RESERVED_MATERIAL_NAMES;
+
 private:
 	ShaderProgram* shader;
 	std::string name;

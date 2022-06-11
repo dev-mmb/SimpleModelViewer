@@ -38,6 +38,8 @@ public:
 	}
 	// returns the first uniform if not found
 	Uniform& getUniform(const std::string& name) { return *getUniformPointer(name); }
+
+	std::vector<std::string> getAllMaterialNames() const;
 	
 private:
 	GLuint id;

@@ -23,6 +23,8 @@ Shader::Shader(const std::string& vshader, const std::string& fshader) :
 	shaderProgram->addUniform(viewPosition);
 
 	shaderProgram->createFromFile(vshader, fshader);
+
+	createMaterialNamesUi();
 }
 
 Shader::~Shader()
@@ -43,6 +45,13 @@ void Shader::addMaterial(const std::string& name)
 Material& Shader::getMaterial(const std::string& name)
 {
 	for (Material* m : materials)
+	{
+		if (m->getName() == name)
+		{
+			return *m;
+		}
+	}
+	for (Material* m : materialsToRenderUi)
 	{
 		if (m->getName() == name)
 		{
@@ -74,4 +83,29 @@ void Shader::unBind()
 void Shader::compile()
 {
 	this->shaderProgram->compile();
+}
+
+void Shader::renderMaterialsUi()
+{
+	for (Material* m : materialsToRenderUi)
+	{
+		m->renderUi();
+	}
+}
+
+void Shader::createMaterialNamesUi()
+{
+	std::vector<std::string> strings = shaderProgram->getAllMaterialNames();
+	for (const std::string& s : strings)
+	{
+		if (std::find(
+			Material::RESERVED_MATERIAL_NAMES.begin(),
+			Material::RESERVED_MATERIAL_NAMES.end(),
+			s)
+			== Material::RESERVED_MATERIAL_NAMES.end())
+		{
+			auto material = new Material(shaderProgram, s);
+			materialsToRenderUi.push_back(material);
+		}
+	}
 }

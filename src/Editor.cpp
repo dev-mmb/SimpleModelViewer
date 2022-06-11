@@ -1,7 +1,5 @@
 #include "Editor.h"
 
-#include <iostream>
-
 #include "ui/ExampleUI.h"
 
 Editor* EditorData::editor;
@@ -59,6 +57,21 @@ void Editor::createInput()
 				lastY = mousePos.y;
 				if (mouseLeftClicked)
 					camera->rotate(-xChange, yChange);
+				if (mouseRightClicked)
+					camera->move(xChange, yChange);
+			}
+		});
+	window->subscribe(Input::Action::MOUSE_CLICK_RIGHT, [this](const Window& w, int action, int mods, float dt)
+		{
+			if (action == GLFW_PRESS)
+			{
+				mouseRightClicked = true;
+				mouseFirstMoved = true;
+			}
+			else
+			{
+				mouseRightClicked = false;
+				mouseFirstMoved = true;
 			}
 		});
 	window->subscribe(Input::Action::MOUSE_CLICK_LEFT, [this](const Window& w, int action, int mods, float dt)
@@ -76,12 +89,10 @@ void Editor::createInput()
 		});
 	window->subscribe(Input::Action::MOUSE_WHEEL_UP, [this](const Window& w, int action, int mods, float dt)
 		{
-			//this->window->setFov(this->window->getFov() - 1);
 			this->camera->zoomOut();
 		});
 	window->subscribe(Input::Action::MOUSE_WHEEL_DOWN, [this](const Window& w, int action, int mods, float dt)
 		{
-			//this->window->setFov(this->window->getFov() + 1);
 			this->camera->zoomIn();
 		});
 }

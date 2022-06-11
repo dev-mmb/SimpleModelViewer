@@ -83,6 +83,24 @@ std::unordered_map<std::string, int> ShaderProgram::getAllUniformsFromMaterial(c
 	return uniformIds;
 }
 
+std::vector<std::string> ShaderProgram::getAllMaterialNames() const
+{
+	std::vector<std::string> names;
+	for (Uniform* u : uniforms)
+	{
+		size_t dotPos = u->getName().find('.');
+		if (dotPos != std::string::npos)
+		{
+			std::string name = u->getName().substr(0, dotPos);
+			if (std::find(names.begin(), names.end(), name) == names.end())
+			{
+				names.push_back(name);
+			}
+		}
+	}
+	return names;
+}
+
 void ShaderProgram::getAllUniforms()
 {
 	GLint count;
