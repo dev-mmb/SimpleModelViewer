@@ -57,8 +57,6 @@ void Editor::createInput()
 				lastY = mousePos.y;
 				if (mouseLeftClicked)
 					camera->rotate(-xChange, yChange);
-				if (mouseRightClicked)
-					camera->move(xChange, yChange);
 			}
 		});
 	window->subscribe(Input::Action::MOUSE_CLICK_RIGHT, [this](const Window& w, int action, int mods, float dt)

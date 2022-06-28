@@ -41,12 +41,6 @@ void Camera::rotate(float xChange, float yChange)
 	calculateViewMatrix();
 }
 
-void Camera::move(float xChange, float yChange)
-{
-	//this->focus += glm::vec3(xChange/ 2, yChange / 2, 0);
-	calculateViewMatrix();
-}
-
 void Camera::setPos(const glm::vec3& p)
 {
 	this->pos = p;

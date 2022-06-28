@@ -11,7 +11,6 @@ public:
 	Camera(glm::vec3 initialPos, glm::vec3 up, GLfloat movementSpeed, int viewPortWidht, int viewPortHeight);
 
 	void rotate(float xChange, float yChange);
-	void move(float xChange, float yChange);
 
 	glm::vec3 getPos() const { return pos; }
 	void setPos(const glm::vec3& p);

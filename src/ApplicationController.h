@@ -12,7 +12,6 @@ class ApplicationController
 public:
 	ApplicationController();
 	~ApplicationController();
-	void save();
 	void render();
 
 private:
